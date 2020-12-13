@@ -29,9 +29,6 @@ JAVAFILES =									\
 			DvfsEnergyController.java		\
 			PowercapEnergyController.java	\
 											\
-			NativeUtils.java				\
-			PerfCheckUtils.java				\
-											\
 			EnergySample.java				\
 			EnergyStats.java				\
 			EnergyDiff.java					\
