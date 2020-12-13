@@ -7,9 +7,6 @@ CFILES =										\
 		msr.c									\
 		dvfs.c									\
  		EnergyStats.c 							\
-		AsyncEnergyMonitorCSide.c				\
-		AsyncEnergyMonitorCSide_JNIExports.c	\
-		CSideDataStorage.c						\
 
 OFILES = $(CFILES:.c=.o)
 
@@ -20,7 +17,6 @@ JAVAFILES =									\
 			EnergyMonitor.java				\
 			SyncEnergyMonitor.java			\
 			AsyncEnergyMonitor.java			\
-			AsyncEnergyMonitorCSide.java	\
 			AsyncEnergyMonitorJavaSide.java	\
 											\
 			EnergyStringParser.java			\
