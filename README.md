@@ -1,7 +1,7 @@
 # reactRAPL
-Repo for Alejandro and Rutvik to collaborate on the jRAPL project (version 2.0)
+Using a version of jRAPL to access CPU energy levels, then allows a user to look at them via a React app. Might allow the user to interact (RAPL powercap or DVFS) with the energy interface once I actually have that incorporated into jRAPL but right now it's just energy monitoring and stuff in terms of what it currently can already do.
 
-The files for reactRAPL are based off of the jRAPL files in the master branch of https://github.com/aservet1/jRAPL as of December 13th 2020 17:00 EST
+The Energy-Related files for reactRAPL are based off of the jRAPL files in the master branch of https://github.com/aservet1/jRAPL as of December 13th 2020 17:00 EST
 
 This is a totally clean copy in the sense that reactRAPL and jRAPL are now completely separate entities. No links
 between each other. While they started with the same files, there is no future association between these files.
