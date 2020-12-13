@@ -1,5 +1,8 @@
 # reactRAPL
-Using a version of jRAPL to access CPU energy levels, then allows a user to look at them via a React app. Might allow the user to interact (RAPL powercap or DVFS) with the energy interface once I actually have that incorporated into jRAPL but right now it's just energy monitoring and stuff in terms of what it currently can already do.
+Using a version of jRAPL to access CPU energy levels, then allows a user to look at them via a React app.
+
+Might allow the user to interact (RAPL powercap or DVFS) with the energy interface once I actually 
+have that incorporated into jRAPL. But for now it's just energy monitoring and stuff in terms of what it currently can already do.
 
 The Energy-Related files for reactRAPL are based off of the jRAPL files in the master branch of https://github.com/aservet1/jRAPL as of December 13th 2020 17:00 EST
 
