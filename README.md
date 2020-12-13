@@ -20,5 +20,12 @@ any similarity between these files will just be happen stance, and not tied to a
 jRAPL files changes to one would ever affect the other.
 
 
-https://github.com/aservet1/jRAPL README for general information about jRAPL, although some implementation details will
+See https://github.com/aservet1/jRAPL README for general information about jRAPL, although some implementation details will
 likely differ for this version.
+
+If you're a total stranger and you're looking through this, don't rely on any of the documentation. I might have updated it,
+but honestly the best you can do to find out what the code does is read though all the code and just take the documentation
+with a grain of salt. I haven't gone through this to make sure someone could go through it and not get confused yet...not that
+the code is so bad that you'll lose your mind trying to read it or anything, but just know that this project is still under
+development and getting changed all the time, so the documentation / comments throughout my code may or may not be in sync with
+what the code itself actually does.
