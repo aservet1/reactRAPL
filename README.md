@@ -1,4 +1,4 @@
-# reactRAPL
+# react-rapl
 Using a version of jRAPL to access CPU energy levels, then allows a user to look at them via a React app.
 
 Might allow the user to interact (RAPL powercap or DVFS) with the energy interface once I actually 
