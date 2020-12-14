@@ -2,8 +2,6 @@ package jRAPL;
 
 public final class ArchSpec {
 
-	//public static final boolean readingDRAM; @TODO -- is this obsolete??
-	//public static final boolean readingGPU; @TODO -- is this obsolete??
 	public static final int NUM_SOCKETS;	
 	public static final int NUM_STATS_PER_SOCKET;
 	public static final int RAPL_WRAPAROUND;
@@ -18,12 +16,6 @@ public final class ArchSpec {
 	public native static int getCpuModel();
 	public native static String energyStatsStringFormat();
 
-	// which power domains are supported @TODO -- are these obsolete??
-	//public native static boolean dramSupported();
-	//public native static boolean gpuSupported();
-	//public native static boolean coreSupported();
-	//public native static boolean pkgSupported();
-
 	// the indexes of where power domains are in the returned array of energy stats
 	// I wonder if this is the best class to calculate and store these indices.
 	//  it's definitely safe and ok enough for now and possibly permanently.
@@ -34,7 +26,6 @@ public final class ArchSpec {
 	public static final int GPU_ARRAY_INDEX;
 	public static final int CORE_ARRAY_INDEX;
 	public static final int PKG_ARRAY_INDEX;
-	//TODO -- there's a 5th possible power domain, right? like full motherboard energy or something
 
 	static {
 
@@ -45,21 +36,6 @@ public final class ArchSpec {
 
 		CPU_MODEL = getCpuModel();
 		CPU_MODEL_NAME = getCpuModelName();
-
-		//int rd = powerDomainsSupported();
-		//if ( rd == 3 ) {
-		////	readingDRAM = true;
-		////	readingGPU  = true;
-		//} else if ( rd == 1 ) {
-		////	readingDRAM = true;
-		////	readingGPU  = false;
-		//} else if ( rd == 2 ) {
-		////	readingDRAM = false;
-		////	readingGPU  = true;
-		//} else {
-		////	readingDRAM = false;
-		////	readingGPU  = false;
-		//}
 
 		NUM_SOCKETS = getSocketNum();
 		RAPL_WRAPAROUND = getWraparoundEnergy();
@@ -100,8 +76,6 @@ public final class ArchSpec {
 
 	public static String infoString() {
 		String s = new String();
-		//s += "readingDRAM: " + readingDRAM + "\n";
-		//s += "readingGPU: " + readingGPU + "\n";
 		s += "NUM_SOCKETS: " + NUM_SOCKETS + "\n";
 		s += "RAPL_WRAPAROUND: " + RAPL_WRAPAROUND + "\n";
 		s += "CPU_MODEL: " + Integer.toHexString(CPU_MODEL) + "\n";
