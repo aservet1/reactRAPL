@@ -28,7 +28,7 @@ public class TestingDriver
                     try {Thread.sleep(40);}catch(Exception e){e.printStackTrace();}
                 }
             } else if (args.length >= 2 && args[1].equals("object")){
-                for (int i = 0; i < 50; i++) {
+                for (int i = 0; i < 25; i++) {
                     System.out.println(monitor.getObjectSample(1).dump());
                     try {Thread.sleep(40);}catch(Exception e){e.printStackTrace();}
                 }
