@@ -78,6 +78,15 @@ public class SyncEnergyMonitor extends EnergyMonitor {
 		} s += String.format("%4f",a[i]);
 		return s;
 	}
+	public static String toStringPrimitiveArray(double[] a)
+	{
+		String[] labels = ArchSpec.ENERGY_STATS_STRING_FORMAT.split("@")[0].split(",");
+		String s = new String();
+		int i; for (i = 0; i < a.length-1; i++) {
+			s += String.format("%s: %4f",labels[i],a[i]) + ", ";
+		} s += String.format("%s: %4f",labels[i],a[i]);
+		return s;
+	}
 
 	public static void main(String[] args) throws InterruptedException
 	{
