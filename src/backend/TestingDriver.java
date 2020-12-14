@@ -11,6 +11,7 @@ public class TestingDriver
     }
     public static void main(String... args)
     {
+        System.out.println(ArchSpec.ENERGY_STATS_STRING_FORMAT);       
         if (args.length >= 1 && args[0].equals("async")){
             AsyncEnergyMonitor monitor = new AsyncEnergyMonitor();
             monitor.init();
@@ -37,5 +38,4 @@ public class TestingDriver
             }
             monitor.dealloc();
         }
-        System.out.println(ArchSpec.ENERGY_STATS_STRING_FORMAT);       
     }}
