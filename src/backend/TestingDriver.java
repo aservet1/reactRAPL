@@ -23,12 +23,12 @@ public class TestingDriver
             SyncEnergyMonitor monitor = new SyncEnergyMonitor();
             monitor.init();
             if (args.length >= 2 && args[1].equals("primitive")){
-                for (;;) {
-                    System.out.println(SyncEnergyMonitor.toStringPrimitiveArray(monitor.getPrimitiveSample(1)));
+                for (int i = 0; i < 25; i++) {
+                    System.out.println(SyncEnergyMonitor.dumpPrimitiveArray(monitor.getPrimitiveSample(1)));
                     try {Thread.sleep(40);}catch(Exception e){e.printStackTrace();}
                 }
             } else if (args.length >= 2 && args[1].equals("object")){
-                for (;;) {
+                for (int i = 0; i < 50; i++) {
                     System.out.println(monitor.getObjectSample(1).dump());
                     try {Thread.sleep(40);}catch(Exception e){e.printStackTrace();}
                 }
@@ -37,9 +37,6 @@ public class TestingDriver
             }
             monitor.dealloc();
         }
-        // else {
-        //     usageAbort();
-        // }
         System.out.println(ArchSpec.ENERGY_STATS_STRING_FORMAT);       
     }
 }

@@ -5,7 +5,6 @@ CFILES =										\
 		NativeRAPL.c							\
 		arch_spec.c								\
 		msr.c									\
-		dvfs.c									\
  		EnergyStats.c 							\
 
 OFILES = $(CFILES:.c=.o)

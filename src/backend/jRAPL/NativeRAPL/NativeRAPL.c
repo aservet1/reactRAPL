@@ -152,6 +152,8 @@ static void copy_to_string(EnergyStats stats_per_socket[num_pkg], char ener_info
 
 void ProfileDealloc()
 {
+	for (int i = 0; i < num_pkg; i++)
+		close(fd[i]);
 	free(fd);
 }
 

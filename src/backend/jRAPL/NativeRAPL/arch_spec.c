@@ -35,31 +35,6 @@ int core_num() {
 }
 
 /** <Alejandro's Interpretation>
- *	Gets info from cpuid call to identify where the APIC stuff is.
- *	To my understnading, APIC stuff can target parts of the process and interrupt it // APIC the advanced programmable interrupt controller
--	tech that intel developed to streamline interrupt handling on multiprocessor systems
-
- *	We care about this bc we want to interrupt processes that pass a certain energy level
- */
-void
-parse_apic_id(cpuid_info_t info_l0, cpuid_info_t info_l1, APIC_ID_t *my_id){
-
-	// Get the SMT ID (SMT = Simultaneous MultiTh/reading)
-	uint64_t smt_mask_width = info_l0.eax & 0x1f;
-	uint64_t smt_mask = ~((-1) << smt_mask_width);
-	my_id->smt_id = info_l0.edx & smt_mask;
-
-	// Get the core ID
-	uint64_t core_mask_width = info_l1.eax & 0x1f;
-	uint64_t core_mask = (~((-1) << core_mask_width ) ) ^ smt_mask;
-	my_id->core_id = (info_l1.edx & core_mask) >> smt_mask_width;
-
-	// Get the package ID
-	uint64_t pkg_mask = (-1) << core_mask_width;
-	my_id->pkg_id = (info_l1.edx & pkg_mask) >> core_mask_width;
-}
-
-/** <Alejandro's Interpretation>
  *	Gets CPUID info given eax_in and ecx_in and eax and ecx x86 args. Stores
  *  reulting e[a/b/c/d]x values in a cpuid_info_t struct
  */
@@ -78,7 +53,6 @@ void cpuid(uint32_t eax_in, uint32_t ecx_in, cpuid_info_t *ci) {
              : "a"(eax_in), "c"(ecx_in)
         );
 }
-
 
 /** <Alejandro's Interpretation>
  *  Wraps up the cpuid function that gets cpuid information stuff. More abstract and easy to deal with
@@ -120,18 +94,6 @@ uint64_t get_num_pkg_core()
 		return num_pkg_thread / num_core_thread;
 }
 
-/** <Alejandro's Interpretation>
- *	Initializes some data about the system, returns number of cores.
-
-	Below used to be global variables (hey i made these not global any more, should
-    probably update the comments for all the functions at some point...)
-    
-	  num_core_thread; 	//number of physical threads per core
-	  num_pkg_thread; 	//number of physical threads per package
-	  num_pkg_core;		//number of cores per package
-	  num_pkg; 			//number of packages for current machine
-
- */
 uint64_t getSocketNum() {
 
 	int coreNum = core_num();
@@ -212,7 +174,7 @@ Java_jRAPL_ArchSpec_energyStatsStringFormat(JNIEnv* env, jclass jcls) {
 	
 }
 
-//TODO -- for organization, see if you can do the wraparound energy calculation here
+//@TODO -- for organization, see if you can do the wraparound energy calculation here
 //	instead of CPUScaler. involves open()-ing up the msr and closing it (if not already open)
 //  and reading directly from it. that would make it so you don't have to do ProfileInit()
 //  if you just want to read the wraparound energy real quick
@@ -254,5 +216,3 @@ Java_jRAPL_ArchSpec_getCpuModelName(JNIEnv* env, jclass jcls) {
 	}
 	return (*env)->NewStringUTF(env, name);
 }
-
-
