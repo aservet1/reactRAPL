@@ -1,3 +1,0 @@
-make package jRAPL statement
-
-move to outside jRAPL/ and make a test java driver file trying to access the jRAPL.*; package methods
