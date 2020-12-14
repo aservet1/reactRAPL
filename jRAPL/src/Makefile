@@ -17,7 +17,6 @@ JAVAFILES =									\
 			EnergyMonitor.java				\
 			SyncEnergyMonitor.java			\
 			AsyncEnergyMonitor.java			\
-			AsyncEnergyMonitorJavaSide.java	\
 											\
 			EnergyStringParser.java			\
 											\
