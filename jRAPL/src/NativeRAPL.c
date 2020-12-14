@@ -9,17 +9,17 @@
 #include <inttypes.h>
 #include <sys/types.h>
 
-#include "CPUScaler.h"
 #include "arch_spec.h"
 #include "msr.h"
 #include "EnergyStats.h"
 
 #define MSR_DRAM_ENERGY_UNIT 0.000015
 
+#define ALL_SOCKETS 0
+
 static int power_domains_supported;
 static uint32_t cpu_model;
 static rapl_msr_unit rapl_unit;
-static rapl_msr_parameter *parameters;
 static int *fd;
 static uint64_t num_pkg;
 static int wraparound_energy = -1;
@@ -37,15 +37,11 @@ void ProfileInit()
 	int i;
 	char msr_filename[BUFSIZ];
 	int core = 0;
-
+	fd = (int *) malloc(num_pkg * sizeof(int));
 	num_pkg = getSocketNum(); 
 	cpu_model = get_cpu_model();
 	power_domains_supported = get_power_domains_supported(cpu_model,NULL);
 	uint64_t num_pkg_thread = get_num_pkg_thread();
-
-	/*only two domains are supported for parameters check*/
-	parameters = (rapl_msr_parameter *)malloc(2 * sizeof(rapl_msr_parameter));
-	fd = (int *) malloc(num_pkg * sizeof(int));
 
 	for(i = 0; i < num_pkg; i++) {
 		if(i > 0) {
@@ -157,7 +153,6 @@ static void copy_to_string(EnergyStats stats_per_socket[num_pkg], char ener_info
 void ProfileDealloc()
 {
 	free(fd);
-	free(parameters);
 }
 
 JNIEXPORT void JNICALL Java_jrapl_EnergyManager_profileInit(JNIEnv *env, jclass jcls)

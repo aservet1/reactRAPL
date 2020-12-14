@@ -1,8 +1,8 @@
-
-TARGET = libCPUScaler.so $(OFILES)
+NATIVELIB = libNativeRAPL.so
+TARGET = $(NATIVELIB) $(OFILES)
 
 CFILES =										\
-		CPUScaler.c								\
+		NativeRAPL.c							\
 		arch_spec.c								\
 		msr.c									\
 		dvfs.c									\
@@ -34,12 +34,11 @@ JAVA_HOME = /usr/lib/jvm/java-11-openjdk-amd64
 JAVA_INCLUDE = $(JAVA_HOME)/include
 JAVA_INCLUDE_LINUX = $(JAVA_INCLUDE)/linux
 
-all: lib_shared_CPUScaler javafiles
+all: libNativeRAPL javafiles
 
-common: $(CFILES)
+libNativeRAPL:
 	gcc $(CFLAGS) -I $(JAVA_INCLUDE) -I$(JAVA_INCLUDE_LINUX) $(CFILES)
-lib_shared_CPUScaler: common
-	gcc -g -Wall -I $(JAVA_INCLUDE) -I $(JAVA_INCLUDE_LINUX) -shared -Wl,-soname,libCPUScaler.so -o $(TARGET) -lc
+	gcc -g -Wall -I $(JAVA_INCLUDE) -I $(JAVA_INCLUDE_LINUX) -shared -Wl,-soname,$(NATIVELIB) -o $(TARGET) -lc
 
 javafiles: $(JAVAFILES)
 	javac $(JAVAFILES) -d .

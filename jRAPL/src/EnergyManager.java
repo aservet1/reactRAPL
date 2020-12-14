@@ -11,7 +11,7 @@ public class EnergyManager
 
 	private static void loadLibrary() {
 
-		String nativelib = "/home/alejandro/jRAPL/src/libCPUScaler.so";
+		String nativelib = "/home/alejandro/reactRAPL/jRAPL/src/libNativeRAPL.so";
 		try {
 			System.load(nativelib);
 		} catch (Exception e) {
