@@ -41,8 +41,7 @@ libNativeRAPL:
 	gcc -g -Wall -I $(JAVA_INCLUDE) -I $(JAVA_INCLUDE_LINUX) -shared -Wl,-soname,$(NATIVELIB) -o $(TARGET) -lc
 
 javafiles: $(JAVAFILES)
-	javac $(JAVAFILES) -d .
+	javac $(JAVAFILES)
 
 clean:
-	rm -f lib_share_CPUScaler $(TARGET)
-	rm -rf jrapl/
+	rm -f $(TARGET) *.class
