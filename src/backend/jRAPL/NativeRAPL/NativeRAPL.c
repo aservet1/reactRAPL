@@ -8,6 +8,7 @@
 #include <string.h>
 #include <inttypes.h>
 #include <sys/types.h>
+#include <errno.h>
 
 #include "arch_spec.h"
 #include "msr.h"
@@ -22,13 +23,21 @@ static uint32_t cpu_model;
 static rapl_msr_unit rapl_unit;
 static int *fd;
 static uint64_t num_pkg;
-static int wraparound_energy = -1;
+//static int wraparound_energy = -1;
+
+static int is_valid_fd(int fd)
+{
+    return fcntl(fd, F_GETFL) != -1 || errno != EBADF;
+}
 
 rapl_msr_unit get_rapl_unit()
 {
 	rapl_msr_unit rapl_unit;
-	uint64_t unit_info = read_msr(fd[0], MSR_RAPL_POWER_UNIT);
-	get_msr_unit(&rapl_unit, unit_info);
+	
+	if (is_valid_fd(fd[0])) {
+		uint64_t unit_info = read_msr(fd[0], MSR_RAPL_POWER_UNIT);
+		get_msr_unit(&rapl_unit, unit_info);
+	}
 	return rapl_unit;
 }
 
@@ -52,7 +61,7 @@ void ProfileInit()
 	}
 
 	rapl_unit = get_rapl_unit();
-	wraparound_energy = get_wraparound_energy(rapl_unit.energy);
+	//wraparound_energy = get_wraparound_energy(rapl_unit.energy);
 }
 
 
@@ -162,11 +171,6 @@ JNIEXPORT void JNICALL Java_jRAPL_EnergyManager_profileInit(JNIEnv *env, jclass 
 	ProfileInit();
 }
 
-//assumes profile has already been inited. @TODO try to get this to be independent of profileinit and move it into arch_spec.c
-JNIEXPORT jint JNICALL Java_jRAPL_ArchSpec_getWraparoundEnergy(JNIEnv* env, jclass jcls)
-{
-	return (jint)wraparound_energy;
-}
 
 JNIEXPORT jstring JNICALL Java_jRAPL_EnergyMonitor_energyStatCheck(JNIEnv *env, jclass jcls, jint whichSocket) {
 	

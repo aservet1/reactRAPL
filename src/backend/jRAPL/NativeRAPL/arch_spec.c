@@ -174,6 +174,11 @@ Java_jRAPL_ArchSpec_energyStatsStringFormat(JNIEnv* env, jclass jcls) {
 	
 }
 
+//assumes profile has already been inited. @TODO try to get this to be independent of profileinit and move it into arch_spec.c
+JNIEXPORT jint JNICALL Java_jRAPL_ArchSpec_getWraparoundEnergy(JNIEnv* env, jclass jcls)
+{
+	return (jint)get_wraparound_energy(get_rapl_unit().energy);
+}
 //@TODO -- for organization, see if you can do the wraparound energy calculation here
 //	instead of CPUScaler. involves open()-ing up the msr and closing it (if not already open)
 //  and reading directly from it. that would make it so you don't have to do ProfileInit()
