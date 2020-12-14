@@ -38,5 +38,4 @@ public class TestingDriver
             monitor.dealloc();
         }
         System.out.println(ArchSpec.ENERGY_STATS_STRING_FORMAT);       
-    }
-}
+    }}
