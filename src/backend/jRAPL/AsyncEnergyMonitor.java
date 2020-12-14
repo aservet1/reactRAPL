@@ -124,6 +124,7 @@ public class AsyncEnergyMonitor extends EnergyMonitor implements Runnable {
 									);
 
 			writer.write("samplingRate: " + samplingRate + " milliseconds\n");
+			writer.write("lifetime: " + Long.toString(getLifetime().toMillis()) + " milliseconds\n");
 			writer.write("socket,"+ArchSpec.ENERGY_STATS_STRING_FORMAT.split("@")[0]+",timestamp(usec since epoch)\n");
 			for (int i = 0; i < samples.size(); i++) {
 				String energyString = samples.get(i);
@@ -145,8 +146,7 @@ public class AsyncEnergyMonitor extends EnergyMonitor implements Runnable {
 			System.out.println("error writing " + fileName);
 			e.printStackTrace();
 		}
-	}
-
+	}	
 
 	public Instant[] getLastKTimestamps(int k) 
 	{
