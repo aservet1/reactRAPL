@@ -1,5 +1,5 @@
 
-package jrapl;
+package jRAPL;
 
 import java.util.ArrayList;
 import java.time.Instant;
