@@ -27,9 +27,10 @@ public final class EnergyStats extends EnergySample
 	{
 		String jsn = new String();
 		jsn += arrayToJSONContent();
-		return "{\n" + jsn + ","
-			  +	"\ntimestamp: " + Long.toString(timestamp.getNano()/1000) + ","
-			  + "\n}";
+		return "{\n"
+			  		+ arrayToJSONContent()
+			  		+	"\n\"timestamp\": " + Long.toString(timestamp.getNano()/1000) + ","
+			  		+ "\n}";
 
 	}
 
@@ -37,6 +38,10 @@ public final class EnergyStats extends EnergySample
 	{
 		assert this.timestamp == null;
 		this.timestamp = ts;
+	}
+
+	public Instant getTimeStamp(){
+		return this.timestamp; // should I worry about not copying it?
 	}
 
 	@Override
@@ -58,5 +63,14 @@ public final class EnergyStats extends EnergySample
 				);
 	}
 
+	public static void main(String[] args){
+		SyncEnergyMonitor em = new SyncEnergyMonitor();
+		em.init();
+		EnergyStats es = em.getObjectSample(1);
+		System.out.println(es);
+		System.out.println(es.toJSON());
+		em.dealloc();
+
+	}
 }
 

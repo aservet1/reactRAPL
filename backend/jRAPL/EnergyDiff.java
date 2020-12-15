@@ -36,8 +36,8 @@ public final class EnergyDiff extends EnergySample
 	@Override
 	public String toJSON() {
 		return "{\n"
-				+ arrayToJSONContent() + ","
-				+ "\n" + "elapsedTime:" + Long.toString(elapsedTime.getNano()/1000) + ","
+				+ arrayToJSONContent()
+				+ "\n" + "\"elapsedTime\": " + Long.toString(elapsedTime.getNano()/1000) + ","
 				+"\n}";
 	}
 
@@ -51,7 +51,9 @@ public final class EnergyDiff extends EnergySample
 			if (statsDiff[i] < 0) statsDiff[i] += ArchSpec.RAPL_WRAPAROUND;
 		}
 
-		return new EnergyDiff (	before.socket, statsDiff);
+		Duration elapsedTime = Duration.between(before.getTimeStamp(), after.getTimeStamp());
+
+		return new EnergyDiff (before.socket, statsDiff, elapsedTime );
 	}
 
 	@Override
@@ -59,9 +61,22 @@ public final class EnergyDiff extends EnergySample
 		return String.join(
 			", ",
 			super.toString(),
-			"Duration (nanoseconds): " + this.elapsedTime.toNanos()
+			"Duration (microseconds): " + this.elapsedTime.toNanos()/1000
 		);	
 	}
+
+	public static void main(String[] args) throws InterruptedException {
+		SyncEnergyMonitor em = new SyncEnergyMonitor();
+		em.init();
+		EnergyStats x = em.getObjectSample(1);
+		Thread.sleep(100);
+		EnergyStats y = em.getObjectSample(1);
+		EnergyDiff z = EnergyDiff.between(x,y);
+		System.out.println(z);
+		System.out.println(z.toJSON());
+
+		em.dealloc();
+	}	
 
 }
 

@@ -27,10 +27,10 @@ public abstract class EnergySample
 	protected String arrayToJSONContent()
 	{
 		String jsn = new String();
-		jsn += "CORE:" + getCore() + ","
-			+ "\nDRAM:" + getDram() + ","
-			+ "\nGPU:" + getGpu() + ","
-			+ "\nPKG:" + getPackage() + ",";
+		jsn += "\"CORE\": " + getCore() + ","
+			+ "\n\"DRAM\": " + getDram() + ","
+			+ "\n\"GPU\": " + getGpu() + ","
+			+ "\n\"PKG\": " + getPackage() + ",";
 		return jsn;
 	}
 
@@ -96,5 +96,6 @@ public abstract class EnergySample
 
 		return String.format("Socket: %d, ", socket) + labeledStats /*+ timestampString*/; 
 	}
+
 
 }
