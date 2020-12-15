@@ -5,25 +5,35 @@ import java.time.Duration;
 
 public abstract class EnergySample
 {
-
 	protected final int socket;
 	
 	protected final double[] stats;
-	protected Instant timestamp;
+	//protected Instant timestamp;
 
-	public EnergySample(int socket, double[] statsForSocket, Instant timestamp)
-	{
-		this.socket = socket;
-		this.stats = statsForSocket;
-		this.timestamp = timestamp;
-	}
+	// public EnergySample(int socket, double[] statsForSocket)//, Instant timestamp)
+	// {
+	// 	this.socket = socket;
+	// 	this.stats = statsForSocket;
+	// 	//this.timestamp = timestamp;
+	// }
 
 	public EnergySample(int socket, double[] statsForSocket)
 	{
 		this.socket = socket;
 		this.stats = statsForSocket;
-		this.timestamp = Instant.now();
+		//this.timestamp = Instant.now();
 	}
+
+	protected String arrayToJSONContent()
+	{
+		String jsn = new String();
+		jsn += "CORE:" + getCore() + ","
+			+ "\nDRAM:" + getDram() + ","
+			+ "\nGPU:" + getGpu() + ","
+			+ "\nPKG:" + getPackage() + ",";
+		return jsn;
+	}
+
 
 	public int getSocket() {
 		return this.socket;
@@ -54,23 +64,19 @@ public abstract class EnergySample
 		return String.join(
 			",",
 			String.format("%d", socket),
-			joinedStats,
-			(timestamp == null)
-				? "null"
-				: Long.toString(
-					Duration.between(
-							Instant.EPOCH,
-							timestamp
-					).toNanos()/1000 //microseconds
-				)
+			joinedStats//,
+			// (timestamp == null)
+			// 	? "null"
+			// 	: Long.toString(
+			// 		Duration.between(
+			// 				Instant.EPOCH,
+			// 				timestamp
+			// 		).toNanos()/1000 //microseconds
+			// 	)
 		);
 	}
 
-	public void setTimestamp(Instant ts)
-	{
-		assert this.timestamp == null;
-		this.timestamp = ts;
-	}
+	public abstract String toJSON();
 
 
 	@Override
@@ -83,12 +89,12 @@ public abstract class EnergySample
 		if (ArchSpec.CORE_ARRAY_INDEX != -1) labeledStats += "Core: " + String.format("%.4f", stats[ArchSpec.CORE_ARRAY_INDEX]) + ", ";
 
 		if (labeledStats.length() == 0) labeledStats = "No power domains supported, ";
-		String timestampString = (timestamp == null) ? ("null")
-								: ("Timestamp (usecs since epoch): " 
-									+ Duration.between(Instant.EPOCH, timestamp)
-									.toNanos()/1000);
+		// String timestampString = (timestamp == null) ? ("null")
+		// 						: ("Timestamp (usecs since epoch): " 
+		// 							+ Duration.between(Instant.EPOCH, timestamp)
+		// 							.toNanos()/1000);
 
-		return String.format("Socket: %d, ", socket) + labeledStats + timestampString; 
+		return String.format("Socket: %d, ", socket) + labeledStats /*+ timestampString*/; 
 	}
 
 }

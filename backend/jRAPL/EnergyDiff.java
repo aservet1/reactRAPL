@@ -13,6 +13,11 @@ public final class EnergyDiff extends EnergySample
 		this.elapsedTime = elapsedTime;
 	}
 
+	public EnergyDiff(int socket, double[] statsForSocket) {
+		super(socket, statsForSocket);
+		this.elapsedTime = null;
+	}
+
 	public Duration getElapsedTime() {
 		return this.elapsedTime;
 	}
@@ -28,6 +33,14 @@ public final class EnergyDiff extends EnergySample
 		);
 	}
 
+	@Override
+	public String toJSON() {
+		return "{\n"
+				+ arrayToJSONContent() + ","
+				+ "\n" + "elapsedTime:" + Long.toString(elapsedTime.getNano()/1000) + ","
+				+"\n}";
+	}
+
 	public static EnergyDiff between(EnergyStats before, EnergyStats after) {
 		assert after.socket == before.socket;
 		assert after.stats.length == before.stats.length;		
@@ -38,11 +51,7 @@ public final class EnergyDiff extends EnergySample
 			if (statsDiff[i] < 0) statsDiff[i] += ArchSpec.RAPL_WRAPAROUND;
 		}
 
-		return new EnergyDiff (	before.socket,
-								statsDiff,
-								(before.timestamp == null || after.timestamp == null)
-								? null
-								: Duration.between(before.timestamp, after.timestamp)	);
+		return new EnergyDiff (	before.socket, statsDiff);
 	}
 
 	@Override
