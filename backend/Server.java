@@ -7,7 +7,7 @@ class MyHandler implements HttpHandler {
 
 	public void handle(HttpExchange t) throws IOException {
 		InputStream is = t.getRequestBody();
-		read(is);
+		is.read();
 		String response = "This is the response";
 		t.sendResponseHeaders(200, response.length());
 		OutputStream os = t.getResponseBody();

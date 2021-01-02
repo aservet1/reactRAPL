@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 
-
 class EnergySampler extends React.Component {
 
     constructor(props) {
@@ -13,18 +12,17 @@ class EnergySampler extends React.Component {
 
     askForEnergy(e) {
         e.preventDefault()
-        axios.get(`/api/getSample`)
+        axios.get(`localhost:10000/api/test`)
             .then(res => {
                 console.log('success')
                 console.log(res.data)
-            }).catch(e =>{
+            }).catch(err =>{
                 console.log('not success')
-                console.log(e)
+                console.log(err)
             })
         this.energy = 'not null'
         this.setState({}) // there should be a better way to force re-rendering than this...
     }
-
 
     render() {
         return (
@@ -35,8 +33,6 @@ class EnergySampler extends React.Component {
             </div>
         )
     }
-
-
 
 }
 
