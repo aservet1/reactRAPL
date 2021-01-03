@@ -1,7 +1,6 @@
 
 package jRAPL;
 
-import java.time.Instant;
 import java.time.Duration;
 
 public final class EnergyDiff extends EnergySample

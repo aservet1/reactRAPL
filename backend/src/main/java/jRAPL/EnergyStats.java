@@ -25,8 +25,8 @@ public final class EnergyStats extends EnergySample
 
 	public String toJSON()
 	{
-		String jsn = new String();
-		jsn += arrayToJSONContent();
+		//String jsn = new String();
+		//jsn += arrayToJSONContent();
 		return "{\n"
 			  		+ arrayToJSONContent()
 			  		+	"\n\"timestamp\": " + Long.toString(timestamp.getNano()/1000) + ","

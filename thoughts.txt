@@ -1,0 +1,31 @@
+ -- things to do to get energy data to front end:
+	0) find out how the http server updates the page, either with default or 404 not found
+		
+
+	1) connect to the /basicenergysample page. have some 'hello world'-like content on it just for now for testing purposes.
+	2) have real energy values show up on the page
+		a) how do you dynamically get and put data on the web page?
+			run() {
+			// ..... preceeding code ..... //
+				if filerequested is '/basicenergysample':
+					outputwriter.write (
+						' <html> <ener stats real val /> </html> '
+					);
+			// ..... rest   of  code ..... //
+			}
+			
+
+okay so now
+	- figure out how it writes to the desired file
+		- how does it do it?
+			fileRequested = second token of the tokenizer
+			if method.equals("GET") {
+				byte[] fileData = readFileData(file, fileLength);
+				sendHeaders(out,relevantInfo);
+				dataOut.write(fileData, 0, fileLength)
+			}
+	
+	
+	- write to the desired file of 'energysample'
+		- constant '1212' value first
+		- energySample.toJSON() value next

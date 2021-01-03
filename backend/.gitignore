@@ -1,1 +1,2 @@
-*.class
+# target directory. created by 'mvn clean install' and deleted by 'mvn clean'. it's all build-product that comes from the source code
+target/

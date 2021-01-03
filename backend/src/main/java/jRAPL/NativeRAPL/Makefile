@@ -1,11 +1,11 @@
 NATIVELIB = libNativeRAPL.so
 TARGET = $(NATIVELIB) $(OFILES)
 
-CFILES =										\
-		NativeRAPL.c							\
-		arch_spec.c								\
-		msr.c									\
- 		EnergyStats.c 							\
+CFILES =					\
+		NativeRAPL.c		\
+		arch_spec.c			\
+		msr.c				\
+ 		EnergyStats.c 		\
 
 OFILES = $(CFILES:.c=.o)
 

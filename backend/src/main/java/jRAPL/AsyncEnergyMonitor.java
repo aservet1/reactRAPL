@@ -17,7 +17,7 @@ public class AsyncEnergyMonitor extends EnergyMonitor implements Runnable {
 
 	private Instant monitorStartTime = null;
 	private Instant monitorStopTime = null;
-	private final ArrayList<Instant> timestamps; //TODO -- decide if you want to have a boolean that enables whether or not you do want to collect timestamps
+	private final ArrayList<Instant> timestamps;
 	private ArrayList<String> samples; 
 	private int samplingRate; // milliseconds
 	private volatile boolean exit = false;

@@ -1,7 +1,7 @@
 
 package jRAPL;
 
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.time.Instant;
 
 public class SyncEnergyMonitor extends EnergyMonitor {
@@ -104,7 +104,7 @@ public class SyncEnergyMonitor extends EnergyMonitor {
 			//diff = SyncEnergyMonitor.subtractPrimitiveSamples(after,before);
 			//System.out.println(dumpPrimitiveArray(diff));
 			//before = after;
-			System.out.println(dumpPrimitiveArray(monitor.getPrimitiveSample()));
+			System.out.println(dumpPrimitiveArray(monitor.getPrimitiveSample(socket)));
 		}
 
 		monitor.dealloc();

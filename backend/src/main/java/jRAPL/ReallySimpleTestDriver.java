@@ -1,6 +1,6 @@
-import jRAPL.*;
+package jRAPL;
 
-public class TestingDriver
+public class ReallySimpleTestDriver
 {   
     public static void usageAbort() {
         System.err.println(

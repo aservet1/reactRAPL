@@ -12,7 +12,7 @@ class EnergySampler extends React.Component {
 
     askForEnergy(e) {
         e.preventDefault()
-        axios.get(`localhost:10000/api/test`)
+        axios.get("/energy")
             .then(res => {
                 console.log('success')
                 console.log(res.data)
