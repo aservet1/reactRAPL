@@ -29,7 +29,7 @@ public class JavaHTTPServer implements Runnable {
 
 	// Client Connection via Socket Class
 	private Socket connect;
-	private static SyncEnergyMonitor energyMonitor; // = new SyncEnergyMonitor();
+	private static SyncEnergyMonitor energyMonitor;
 
 	public JavaHTTPServer(Socket c) { connect = c; }
 
@@ -126,13 +126,12 @@ public class JavaHTTPServer implements Runnable {
 			} else {
 
 				if (method.equals("GET")) { // GET method so we return content
-					byte[] response;
-					int len;
-
+					byte[] response; int len;
 					switch (fileRequested) {
 						case "/energy":
 							response = energyMonitor.getObjectSample(1).toJSON().getBytes();
 							len = response.length;
+							if (verbose) System.out.println(new String(response));
 							break;
 						case "/energy10s":
 							EnergyStats before, after;
@@ -141,17 +140,16 @@ public class JavaHTTPServer implements Runnable {
 							after = energyMonitor.getObjectSample(1);
 							response = EnergyDiff.between(before, after).toJSON().getBytes();
 							len = response.length;
-
+							if (verbose) System.out.println(new String(response));
 							break;
 						default:
 							response = null;
+							if (verbose) System.out.println("response = null");
 							len = 0;
 					}
 					// send HTTP Headers
 					sendHTTPHeader(headerOut, "HTTP/1.1 200 OK", len);				
 					sendHTTPResponse(dataOut, response, len);
-					//dataOut.write(response, 0, len);
-					//dataOut.flush();
 				}
 			}
 		} catch (IOException ioe) {
@@ -184,6 +182,5 @@ public class JavaHTTPServer implements Runnable {
 	{
 		dataOut.write(response, 0, len);
 		dataOut.flush();
-
 	}
 }
