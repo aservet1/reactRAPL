@@ -5,7 +5,6 @@ class EnergySampler extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.energy = 'null';
         this.askForEnergy = this.askForEnergy.bind(this)
     }
@@ -16,12 +15,13 @@ class EnergySampler extends React.Component {
             .then(res => {
                 console.log('success')
                 console.log(res.data)
+                this.energy = res.data
+                this.setState({})
             }).catch(err =>{
                 console.log('not success')
                 console.log(err)
+                this.setState({})
             })
-        this.energy = 'not null'
-        this.setState({}) // there should be a better way to force re-rendering than this...
     }
 
     render() {
