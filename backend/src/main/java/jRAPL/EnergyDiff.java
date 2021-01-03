@@ -34,10 +34,8 @@ public final class EnergyDiff extends EnergySample
 
 	@Override
 	public String toJSON() {
-		return "{\n"
-				+ arrayToJSONContent()
-				+ "\n" + "\"elapsedTime\": " + Long.toString(elapsedTime.getNano()/1000) + ","
-				+"\n}";
+		return "{ " + arrayToJSONContent() + " \"elapsedTime\": " 
+				+ Long.toString(elapsedTime.getNano()/1000) + "}";
 	}
 
 	public static EnergyDiff between(EnergyStats before, EnergyStats after) {

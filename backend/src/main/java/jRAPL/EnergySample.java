@@ -28,9 +28,9 @@ public abstract class EnergySample
 	{
 		String jsn = new String();
 		jsn += "\"CORE\": " + getCore() + ","
-			+ "\n\"DRAM\": " + getDram() + ","
-			+ "\n\"GPU\": " + getGpu() + ","
-			+ "\n\"PKG\": " + getPackage() + ",";
+			+ "\"DRAM\": " + getDram() + ","
+			+ "\"GPU\": " + getGpu() + ","
+			+ "\"PKG\": " + getPackage() + ",";
 		return jsn;
 	}
 

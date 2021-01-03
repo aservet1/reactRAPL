@@ -27,11 +27,8 @@ public final class EnergyStats extends EnergySample
 	{
 		//String jsn = new String();
 		//jsn += arrayToJSONContent();
-		return "{\n"
-			  		+ arrayToJSONContent()
-			  		+	"\n\"timestamp\": " + Long.toString(timestamp.getNano()/1000) + ","
-			  		+ "\n}";
-
+		return "{" + arrayToJSONContent() + "\"timestamp\": "
+				+ Long.toString(timestamp.getNano()/1000) + "}";
 	}
 
 	public void setTimestamp(Instant ts)
