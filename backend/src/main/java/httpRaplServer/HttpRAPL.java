@@ -19,7 +19,7 @@ import jRAPL.EnergyStats;
 // Original code copied from SSaurel's Blog: 
 // https://www.ssaurel.com/blog/create-a-simple-http-web-server-in-java
 // Each Client Connection will be managed in a dedicated Thread
-public class JavaHTTPServer implements Runnable { 
+public class HttpRAPL implements Runnable { 
 
 	// port to listen connection
 	static final int PORT = 8080;
@@ -31,7 +31,9 @@ public class JavaHTTPServer implements Runnable {
 	private Socket connect;
 	private static SyncEnergyMonitor energyMonitor;
 
-	public JavaHTTPServer(Socket c) { connect = c; }
+	public HttpRAPL(Socket c) { 
+		connect = c;
+	}
 
 	public static void main(String[] args) {
 		execCmd("modprobe msr");
@@ -46,26 +48,15 @@ public class JavaHTTPServer implements Runnable {
      *   (|&&>;)-like commands. Simple ones.
      */
     private static void execCmd(String command) {
-		String s = null;
-
+		String s;
         try {
             Process p = Runtime.getRuntime().exec(command);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
             BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            // read the output from the command
-            ///System.out.println("Here is the standard output of the command:\n");
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
-            }
-            // read any errors from the attempted command
-            ///System.out.println("Here is the standard error of the command (if any):\n");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
-            return;
-        }
-        catch (IOException e) {
-            System.out.println("<<IOException in execCmd():");
+            while ((s = stdInput.readLine()) != null) System.out.println(s); // printing stdout
+            while ((s = stdError.readLine()) != null) System.out.println(s); // printing stderr
+        } catch (IOException e) {
+            System.out.println("<<<IOException in execCmd():");
             e.printStackTrace();
             System.exit(-1);
         }
@@ -76,16 +67,12 @@ public class JavaHTTPServer implements Runnable {
 			ServerSocket serverConnect = new ServerSocket(PORT);
 			System.out.println("Server started.\nListening for connections on port : " + PORT + " ...\n");
 
-			// we listen until user halts server execution			
 			while (true) {
-				JavaHTTPServer myServer = new JavaHTTPServer(serverConnect.accept());
-				
+				HttpRAPL serverJob = new HttpRAPL(serverConnect.accept());
 				if (verbose) System.out.println("Connecton opened. (" + new Date() + ")");
-				
-				// create dedicated thread to manage the client connection
-				Thread thread = new Thread(myServer);
-				thread.start();
-			}	
+				Thread serverJobThread = new Thread(serverJob);
+				serverJobThread.start();
+			}
 			//serverConnect.close(); -- unreachable
 		} catch (IOException e) {
 			System.err.println("Server Connection error : " + e.getMessage());
@@ -100,8 +87,6 @@ public class JavaHTTPServer implements Runnable {
 		BufferedOutputStream dataOut = null;
 
 		try {
-			String fileRequested = null;
-
 			// we read characters from the client via input stream on the socket
 			in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
 			// we get character output stream to client (for headers)
@@ -115,42 +100,17 @@ public class JavaHTTPServer implements Runnable {
 			// we parse the request with a string tokenizer
 			StringTokenizer parse = new StringTokenizer(input);
 			String method = parse.nextToken().toUpperCase(); // we get the HTTP method of the client
-			// we get file requested
-			fileRequested = parse.nextToken().toLowerCase();
+			// we get file requested ie "/energy"
+			String pageRequested = parse.nextToken().toLowerCase();
 
-			// we support only GET and HEAD methods, we check
-			if (!method.equals("GET")  &&  !method.equals("HEAD")) {
+			// we only support GET and HEAD method
+			if (!method.equals("GET") && !method.equals("HEAD")) {
 				if (verbose) System.out.println("501 Not Implemented : " + method + " method.");
-				// we send HTTP Headers to client
 				sendHTTPHeader(headerOut, "HTTP/1.1 501 Not Implemented", 0);
-			} else {
-
-				if (method.equals("GET")) { // GET method so we return content
-					byte[] response; int len;
-					switch (fileRequested) {
-						case "/energy":
-							response = energyMonitor.getObjectSample(1).toJSON().getBytes();
-							len = response.length;
-							if (verbose) System.out.println(new String(response));
-							break;
-						case "/energy10s":
-							EnergyStats before, after;
-							before = energyMonitor.getObjectSample(1);
-							try { Thread.sleep(10000); } catch (Exception ex) { ex.printStackTrace(); }
-							after = energyMonitor.getObjectSample(1);
-							response = EnergyDiff.between(before, after).toJSON().getBytes();
-							len = response.length;
-							if (verbose) System.out.println(new String(response));
-							break;
-						default:
-							response = "<h2>invalid page requested</h2>".getBytes();
-							if (verbose) System.out.println(new String(response));
-							len = response.length;
-					}
-					// send HTTP Headers
-					sendHTTPHeader(headerOut, "HTTP/1.1 200 OK", len);				
-					sendHTTPResponse(dataOut, response, len);
-				}
+			} else if (method.equals("GET")) { // GET method so we return content
+				byte[] response = getResponse(pageRequested);
+				sendHTTPHeader(headerOut, "HTTP/1.1 200 OK", response.length);				
+				sendHTTPResponse(dataOut, response, response.length);
 			}
 		} catch (IOException ioe) {
 			System.err.println("Server error : " + ioe);
@@ -159,18 +119,53 @@ public class JavaHTTPServer implements Runnable {
 				in.close();
 				headerOut.close();
 				dataOut.close();
-				connect.close(); // we close socket connection
+				connect.close(); // close socket connection
 			} catch (Exception e) {
 				System.err.println("Error closing stream : " + e.getMessage());
 			} 
-			if (verbose) System.out.println("Connection closed.\n");
+			if (verbose) {
+				System.out.println("Connection closed.\n");
+			}
 		}
 	}
 
-	private void sendHTTPHeader(PrintWriter headerOut, String firstLine, int fileLength)
-	{
+	private byte[] getResponse(String pageRequested) {
+		byte[] response;
+		switch (pageRequested) {
+			case "/energy":
+				response = energyMonitor.getObjectSample(1).toJSON().getBytes();
+				if (verbose) {
+					System.out.println(new String(response));
+				}
+				break;
+
+			case "/energy10s":
+				EnergyStats before, after;
+				before = energyMonitor.getObjectSample(1);
+				try { 
+					Thread.sleep(10000);
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				after = energyMonitor.getObjectSample(1);
+				response = EnergyDiff.between(before, after).toJSON().getBytes();
+				if (verbose) {
+					System.out.println(new String(response));
+				}
+				break;
+
+			default:
+				response = "<h2>invalid page requested</h2>".getBytes();
+				if (verbose) {
+					System.out.println(new String(response));
+				}
+		}
+		return response;
+	}
+
+	private void sendHTTPHeader(PrintWriter headerOut, String firstLine, int fileLength) {
 		headerOut.println(firstLine);
-		headerOut.println("Server: Java HTTP Server for RAPL Energy Requests : 1.0");
+		headerOut.println("Server: HttpRAPL Server for Energy Requests : 1.0");
 		headerOut.println("Date: " + new Date());
 		headerOut.println("Content-type: " + "something");
 		headerOut.println("Content-length: " + fileLength);
@@ -178,8 +173,7 @@ public class JavaHTTPServer implements Runnable {
 		headerOut.flush(); // flush character output stream buffer
 	}
 
-	private void sendHTTPResponse(BufferedOutputStream dataOut, byte[] response, int len) throws IOException
-	{
+	private void sendHTTPResponse(BufferedOutputStream dataOut, byte[] response, int len) throws IOException {
 		dataOut.write(response, 0, len);
 		dataOut.flush();
 	}
