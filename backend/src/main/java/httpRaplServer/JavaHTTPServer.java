@@ -143,9 +143,9 @@ public class JavaHTTPServer implements Runnable {
 							if (verbose) System.out.println(new String(response));
 							break;
 						default:
-							response = null;
-							if (verbose) System.out.println("response = null");
-							len = 0;
+							response = "<h2>invalid page requested</h2>".getBytes();
+							if (verbose) System.out.println(new String(response));
+							len = response.length;
 					}
 					// send HTTP Headers
 					sendHTTPHeader(headerOut, "HTTP/1.1 200 OK", len);				
