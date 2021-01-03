@@ -1,4 +1,0 @@
-Super simple Java web server. It handles GET requests and directs you to the file in your directory for it. Very simple. Haven't figured out
-how to get it to ask for energy samples instead of display a page. I suppose I could write an energy sample to a file and then have that
-be displayed as the web page of 'the most recent energy sample'. Gotta recalibrate it quite a bit though if I'm gonna go down that route.
-I think it's worth it to try and get it to work like that
