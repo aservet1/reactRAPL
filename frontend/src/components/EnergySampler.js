@@ -5,17 +5,19 @@ class EnergySampler extends React.Component {
 
     constructor(props) {
         super(props)
-        this.energy = 'null';
-        this.askForEnergy = this.askForEnergy.bind(this)
+        this.EnergyStats = 'null';
+        this.EnergyDiff10sec = 'null';
+        this.requestEnergyStats = this.requestEnergyStats.bind(this)
+        this.requestEnergyDiff10sec = this.requestEnergyDiff10sec.bind(this)
     }
 
-    askForEnergy(e) {
+    requestEnergyStats(e) {
         e.preventDefault()
         axios.get("/energy")
             .then(res => {
                 console.log('success')
                 console.log(res.data)
-                this.energy = res.data
+                this.EnergyStats = res.data
                 this.setState({})
             }).catch(err =>{
                 console.log('not success')
@@ -24,15 +26,35 @@ class EnergySampler extends React.Component {
             })
     }
 
+    requestEnergyDiff10sec(e) {
+        e.preventDefault();
+        axios.get("/energy10s")
+            .then(res => {
+                console.log('success')
+                console.log(res.data)
+                this.EnergyDiff10sec = res.data;
+                this.setState({})
+            })
+    }
+
     render() {
         return (
-            <div className="EnergySampler">
-                <input type="button" value="getEnergy()" onClick={this.askForEnergy}/>
+            <div>
+            <div className="EnergyStats">
+                <input type="button" value="getEnergy()" onClick={this.requestEnergyStats}/>
                 <br></br>
-                {this.energy}
+                {this.EnergyStats}
             </div>
-        )
+
+            <div className="EnergyDiff10sec">
+                <input type="button" value="getEnergy()" onClick={this.requestEnergyDiff10sec}/>
+                <br></br>
+                {this.EnergyDiff10sec}
+            </div>
+            </div>
+        );
     }
+    
 
 }
 
