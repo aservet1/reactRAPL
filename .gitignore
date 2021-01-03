@@ -29,3 +29,4 @@ yarn-error.log*
 *.so
 # mymisc
 *.swp
+.eslintcache
