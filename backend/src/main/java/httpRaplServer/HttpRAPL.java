@@ -16,7 +16,7 @@ import jRAPL.SyncEnergyMonitor;
 import jRAPL.EnergyDiff;
 import jRAPL.EnergyStats;
 
-// Original code copied from SSaurel's Blog: 
+// Original code copied and modified from SSaurel's Blog: 
 // https://www.ssaurel.com/blog/create-a-simple-http-web-server-in-java
 // Each Client Connection will be managed in a dedicated Thread
 public class HttpRAPL implements Runnable { 
@@ -129,6 +129,22 @@ public class HttpRAPL implements Runnable {
 		}
 	}
 
+	private void sendHTTPHeader(PrintWriter headerOut, String firstLine, int fileLength) {
+		headerOut.println(firstLine);
+		headerOut.println("Server: HttpRAPL Server for Energy Requests : 1.0");
+		headerOut.println("Date: " + new Date());
+		headerOut.println("Content-type: " + "something");
+		headerOut.println("Content-length: " + fileLength);
+		headerOut.println(); // blank line between headers and content, very important !
+		headerOut.flush(); // flush character output stream buffer
+	}
+
+	private void sendHTTPResponse(BufferedOutputStream dataOut, byte[] response, int len) throws IOException {
+		dataOut.write(response, 0, len);
+		dataOut.flush();
+	}
+
+	/** Come up with a byte[] to send as the response to a GET request */
 	private byte[] getResponse(String pageRequested) {
 		byte[] response;
 		switch (pageRequested) {
@@ -163,18 +179,4 @@ public class HttpRAPL implements Runnable {
 		return response;
 	}
 
-	private void sendHTTPHeader(PrintWriter headerOut, String firstLine, int fileLength) {
-		headerOut.println(firstLine);
-		headerOut.println("Server: HttpRAPL Server for Energy Requests : 1.0");
-		headerOut.println("Date: " + new Date());
-		headerOut.println("Content-type: " + "something");
-		headerOut.println("Content-length: " + fileLength);
-		headerOut.println(); // blank line between headers and content, very important !
-		headerOut.flush(); // flush character output stream buffer
-	}
-
-	private void sendHTTPResponse(BufferedOutputStream dataOut, byte[] response, int len) throws IOException {
-		dataOut.write(response, 0, len);
-		dataOut.flush();
-	}
 }
