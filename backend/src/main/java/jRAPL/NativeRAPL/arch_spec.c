@@ -8,15 +8,6 @@
 #include <string.h>
 #include "arch_spec.h"
 
-/** <Alejandro's Interpretation>
- *	- (?) Direct  CPUID  access  through  this  device
-          should only be used in exceptional cases.
- *	Calls cpuid with eax=1 which returns info abt if its SANDYBRIDGE, BROADWELL, ...
- *	EAX	Version Information: Type, Family, Model, and Stepping ID
--	EBX	Bits 7-0: Brand Index
--	-	Bits 15-8: CLFLUSH line size (Value . 8 = cache line size in bytes)
--	-	Bits 23-16: Number of logical processors per physical processor; two for the Pentium 4 processor supporting Hyper-Threading Technology
- */
 uint32_t
 get_cpu_model(void)
 {
@@ -27,17 +18,10 @@ get_cpu_model(void)
 	return (((eax>>16)&0xFU)<<4) + ((eax>>4)&0xFU);
 }
 
-/** <Alejandro's Interpretation>
- * Gets the number of processors with sysconf. # processors == # cores (right(?))
- */
 int core_num() {
 	return sysconf(_SC_NPROCESSORS_CONF); //passed in is number of configured processors
 }
 
-/** <Alejandro's Interpretation>
- *	Gets CPUID info given eax_in and ecx_in and eax and ecx x86 args. Stores
- *  reulting e[a/b/c/d]x values in a cpuid_info_t struct
- */
 void cpuid(uint32_t eax_in, uint32_t ecx_in, cpuid_info_t *ci) {
 	 asm (
 #if defined(__LP64__)           /* 64-bit architecture */
@@ -54,19 +38,6 @@ void cpuid(uint32_t eax_in, uint32_t ecx_in, cpuid_info_t *ci) {
         );
 }
 
-/** <Alejandro's Interpretation>
- *  Wraps up the cpuid function that gets cpuid information stuff. More abstract and easy to deal with
- *	no specific numbers or assembly or whatever. Always passes in 0xb because thats the cpuid() arg that
- *	gives info about packages and cores and APIC info
- *
- *	see intel manual pdf p. 771 for info about when eax_in = 0x0b; ebx bits 15-00 are number of logical preprocessors at this level type
- *		the number reflects configuration as shipped by Intel
-
-	- INTEL: CPUID eax=0x0000000B
-	  For Intel CPUs (and not AMD), this CPUID function tells you "Number of bits to shift right APIC ID to get next level APIC ID", and needs to be used twice. The 		  first time (with ECX=0) it tells you how many bits of the APIC ID is used to identify the logical CPU within each core (logical_CPU_bits). The second time (with
-	  ECX=1) it tells you how many bits of the APIC ID is used to identify the core and logical CPU within the chip, and to get "core_bits" from this value you subtract
-	  "logical_CPU_bits" from it.
- */
 cpuid_info_t getProcessorTopology(uint32_t level) {
 	cpuid_info_t info;
 	cpuid(0xb, level, &info); ///define a constant for 0xb at some point...
@@ -179,10 +150,6 @@ JNIEXPORT jint JNICALL Java_jRAPL_ArchSpec_getWraparoundEnergy(JNIEnv* env, jcla
 {
 	return (jint)get_wraparound_energy(get_rapl_unit().energy);
 }
-//@TODO -- for organization, see if you can do the wraparound energy calculation here
-//	instead of CPUScaler. involves open()-ing up the msr and closing it (if not already open)
-//  and reading directly from it. that would make it so you don't have to do ProfileInit()
-//  if you just want to read the wraparound energy real quick
 
 JNIEXPORT jint JNICALL
 Java_jRAPL_ArchSpec_powerDomainsSupported(JNIEnv * env, jclass jcls) {

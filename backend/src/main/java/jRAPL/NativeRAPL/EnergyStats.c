@@ -16,7 +16,6 @@ energy_stats_subtract(EnergyStats x, EnergyStats y){ //@TODO -- implement the wr
 	return diff;
 }
 
-
 void
 energy_stats_to_string(EnergyStats estats, char ener_string[512])
 {

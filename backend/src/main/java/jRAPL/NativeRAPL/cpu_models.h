@@ -17,7 +17,6 @@
 #define HASWELL_EP	0x3FU
 #define BROADWELL	0xD4U
 #define BROADWELL2	0x4FU
-
-#define APOLLOLAKE	0x5CU //alejandro's computer
-#define COFFEELAKE2	0x9eU // rutvik's first computer
+#define APOLLOLAKE	0x5CU
+#define COFFEELAKE2	0x9eU
 #define KABYLAKE	0x8eU

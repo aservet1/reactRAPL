@@ -19,6 +19,7 @@ all: libNativeRAPL
 libNativeRAPL:
 	gcc $(CFLAGS) -I $(JAVA_INCLUDE) -I$(JAVA_INCLUDE_LINUX) $(CFILES)
 	gcc -g -Wall -I $(JAVA_INCLUDE) -I $(JAVA_INCLUDE_LINUX) -shared -Wl,-soname,$(NATIVELIB) -o $(TARGET) -lc
+	rm -f $(OFILES)
 
 clean:
 	rm -f $(TARGET)

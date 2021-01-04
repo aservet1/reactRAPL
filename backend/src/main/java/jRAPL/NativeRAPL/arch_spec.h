@@ -20,7 +20,7 @@ typedef struct cpuid_info_t {
 	uint32_t edx;
 } cpuid_info_t;
 
-#define UNDEFINED_ARCHITECTURE 0 //
+#define UNDEFINED_ARCHITECTURE 0 
 #define READ_FROM_DRAM 1
 #define READ_FROM_GPU 2
 #define READ_FROM_DRAM_AND_GPU 3
