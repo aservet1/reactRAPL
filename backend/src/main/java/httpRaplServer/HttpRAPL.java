@@ -144,38 +144,51 @@ public class HttpRAPL implements Runnable {
 		dataOut.flush();
 	}
 
+	private void sleep_print(int ms) {
+		// print the next second every 1000 ms
+		int seconds = (int)(ms/1000);
+		int milliseconds = ms % 1000;
+		if (verbose) {
+			System.out.println("sec: " + seconds + ", " + "msec: " + milliseconds);
+		} try {
+			for (int s = 1; s <= seconds; s++) {
+				Thread.sleep(1000);
+				if (verbose) {
+					System.out.println(s);
+				}
+			}
+			Thread.sleep(milliseconds);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
 	/** Come up with a byte[] to send as the response to a GET request */
 	private byte[] getResponse(String pageRequested) {
 		byte[] response;
-		switch (pageRequested) {
-			case "/energy":
-				response = energyMonitor.getObjectSample(1).toJSON().getBytes();
-				if (verbose) {
-					System.out.println(new String(response));
-				}
-				break;
-
-			case "/energy10s":
-				EnergyStats before, after;
-				before = energyMonitor.getObjectSample(1);
-				try { 
-					Thread.sleep(10000);
-				} catch (Exception ex) {
-					ex.printStackTrace();
-				}
-				after = energyMonitor.getObjectSample(1);
-				response = EnergyDiff.between(before, after).toJSON().getBytes();
-				if (verbose) {
-					System.out.println(new String(response));
-				}
-				break;
-
-			default:
-				response = "<h2>invalid page requested</h2>".getBytes();
-				if (verbose) {
-					System.out.println(new String(response));
-				}
+		if (pageRequested.equals("/energy/stats")) {
+			response = energyMonitor.getObjectSample(1).toJSON().getBytes();
+			if (verbose) {
+				System.out.println(new String(response));
+			}
+		} else if (pageRequested.startsWith("/energy/diff")) {
+			String[] parts = pageRequested.split("/");
+			int seconds = Integer.parseInt(parts[parts.length-1]);
+			EnergyStats before, after;
+			before = energyMonitor.getObjectSample(1);
+			sleep_print(seconds*1000);
+			after = energyMonitor.getObjectSample(1);
+			response = EnergyDiff.between(before, after).toJSON().getBytes();
+			if (verbose) {
+				System.out.println(new String(response));
+			}
+		} else {
+			response = "<h2>invalid page requested</h2>".getBytes();
+			if (verbose) {
+				System.out.println(new String(response));
+			}
 		}
+
 		return response;
 	}
 
