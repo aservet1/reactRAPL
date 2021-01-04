@@ -37,7 +37,7 @@ class EnergySampler extends React.Component {
         axios.get("/energy10s")
             .then(res => {
                 this.setState({"EnergyDiff": res.data})
-                console.log(this.EnergyDiff)
+                console.log(this.state.EnergyDiff)
             }).catch(err => {
                 console.log(err)
                 this.setState({})
@@ -67,8 +67,6 @@ class EnergySampler extends React.Component {
             </div>
         );
     }
-    
-
 }
 
 export default EnergySampler;
