@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom';
 function Header () {
     return (
         <nav>
-            <NavLink exact activeClassName="active" to="/"> Energy Sampler </NavLink>
-            <NavLink exact activeClassName="active" to="/dummy"> temporary </NavLink>
+            <NavLink exact activeClassName="active" to="/energystats"> Energy Stats Snapshot | </NavLink>
+            <NavLink exact activeClassName="active" to="/energydiff"> Energy Diff Over Time | </NavLink>
+            <NavLink exact activeClassName="active" to="/dummy"> test component page | </NavLink>
         </nav>
     );
 }
