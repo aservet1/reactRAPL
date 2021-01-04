@@ -43,23 +43,23 @@ public class HttpRAPL implements Runnable {
 		energyMonitor.dealloc();
 	}
 
-    /** Right now only used for 'sudo modprobe msr'.
-     *   But can be used for any simple / non compound 
-     *   (|&&>;)-like commands. Simple ones.
-     */
-    private static void execCmd(String command) {
+	/** Right now only used for 'sudo modprobe msr'.
+	*   But can be used for any simple / non compound 
+	*   (|&&>;)-like commands. Simple ones.
+	*/
+	private static void execCmd(String command) {
 		String s;
-        try {
-            Process p = Runtime.getRuntime().exec(command);
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-            while ((s = stdInput.readLine()) != null) System.out.println(s); // printing stdout
-            while ((s = stdError.readLine()) != null) System.out.println(s); // printing stderr
-        } catch (IOException e) {
-            System.out.println("<<<IOException in execCmd():");
-            e.printStackTrace();
-            System.exit(-1);
-        }
+		try {
+			Process p = Runtime.getRuntime().exec(command);
+        		BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        		BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+        		while ((s = stdInput.readLine()) != null) System.out.println(s); // printing stdout
+        		while ((s = stdError.readLine()) != null) System.out.println(s); // printing stderr
+        	} catch (IOException e) {
+        		System.out.println("<<<IOException in execCmd():");
+        		e.printStackTrace();
+        		System.exit(-1);
+        	}
 	}
 	
 	private static void startServer() {
