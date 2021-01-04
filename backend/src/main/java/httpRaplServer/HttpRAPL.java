@@ -166,12 +166,15 @@ public class HttpRAPL implements Runnable {
 	/** Come up with a byte[] to send as the response to a GET request */
 	private byte[] getResponse(String pageRequested) {
 		byte[] response;
-		if (pageRequested.equals("/energy/stats")) {
+		if (pageRequested.equals("/energy/stats"))
+		{
 			response = energyMonitor.getObjectSample(1).toJSON().getBytes();
 			if (verbose) {
 				System.out.println(new String(response));
 			}
-		} else if (pageRequested.startsWith("/energy/diff")) {
+		}
+		else if (pageRequested.startsWith("/energy/diff"))
+		{
 			String[] parts = pageRequested.split("/");
 			int seconds = Integer.parseInt(parts[parts.length-1]);
 			EnergyStats before, after;
@@ -182,7 +185,9 @@ public class HttpRAPL implements Runnable {
 			if (verbose) {
 				System.out.println(new String(response));
 			}
-		} else {
+		}
+		else
+		{
 			response = "<h2>invalid page requested</h2>".getBytes();
 			if (verbose) {
 				System.out.println(new String(response));
