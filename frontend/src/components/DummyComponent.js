@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 class DummyComponent extends React.Component {
 
     reverseString = (str) => {
