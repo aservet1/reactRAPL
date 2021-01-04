@@ -173,13 +173,13 @@ public class HttpRAPL implements Runnable {
 				System.out.println(new String(response));
 			}
 		}
-		else if (pageRequested.startsWith("/energy/diff"))
+		else if (pageRequested.startsWith("/energy/diff")) // will overall be of the form /energy/diff/{milliseconds}
 		{
 			String[] parts = pageRequested.split("/");
-			int seconds = Integer.parseInt(parts[parts.length-1]);
+			int milliseconds = Integer.parseInt(parts[parts.length-1]);
 			EnergyStats before, after;
 			before = energyMonitor.getObjectSample(1);
-			sleep_print(seconds*1000);
+			sleep_print(milliseconds);
 			after = energyMonitor.getObjectSample(1);
 			response = EnergyDiff.between(before, after).toJSON().getBytes();
 			if (verbose) {
