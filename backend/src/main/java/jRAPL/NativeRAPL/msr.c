@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-
 #include "msr.h"
 #include "arch_spec.h"
 
@@ -29,18 +28,16 @@ extractBitField(uint64_t inField, uint64_t width, uint64_t offset)
 
 uint64_t read_msr(int fd, uint64_t which)
 {
-
 	uint64_t data = 0;
 
-	if ( pread(fd, &data, sizeof data, which) != sizeof data ) {
-	  fprintf(stderr,"ERROR read_msr(): pread error!\n");
-	}
+	if ( pread(fd, &data, sizeof data, which) != sizeof data )
+		fprintf(stderr,"ERROR read_msr(): pread error!\n");
 
 	return data;
 }
 
-void get_msr_unit(rapl_msr_unit *unit_obj, uint64_t data) {
-
+void get_msr_unit(rapl_msr_unit *unit_obj, uint64_t data)
+{
 	uint64_t energy_bits = extractBitField(data, ENERGY_BIT_SIZE, ENERGY_BIT_START);
 
 	unit_obj->power = -1;
@@ -52,4 +49,3 @@ double
 get_wraparound_energy(double energy_unit) {
 	return 1.0 / energy_unit;
 }
-

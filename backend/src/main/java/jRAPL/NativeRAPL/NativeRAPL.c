@@ -23,7 +23,6 @@ static uint32_t cpu_model;
 static rapl_msr_unit rapl_unit;
 static int *fd;
 static uint64_t num_pkg;
-//static int wraparound_energy = -1;
 
 static int is_valid_fd(int fd)
 {
@@ -61,9 +60,7 @@ void ProfileInit()
 	}
 
 	rapl_unit = get_rapl_unit();
-	//wraparound_energy = get_wraparound_energy(rapl_unit.energy);
 }
-
 
 static inline double read_Pkg(int socket)
 {
@@ -180,15 +177,11 @@ JNIEXPORT jstring JNICALL Java_jRAPL_EnergyMonitor_energyStatCheck(JNIEnv *env, 
 	EnergyStatCheck(stats_per_socket, whichSocket);
 	copy_to_string(stats_per_socket, ener_info, whichSocket);
 	
-	
 	jstring ener_string = (*env)->NewStringUTF(env, ener_info);
-  	
 	return ener_string;
-
 }
 
-JNIEXPORT void JNICALL Java_jRAPL_EnergyManager_profileDealloc(JNIEnv * env, jclass jcls) {
-
+JNIEXPORT void JNICALL Java_jRAPL_EnergyManager_profileDealloc(JNIEnv * env, jclass jcls)
+{
 	ProfileDealloc();
-
 }
