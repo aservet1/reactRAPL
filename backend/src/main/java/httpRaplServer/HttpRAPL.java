@@ -26,6 +26,9 @@ public class HttpRAPL implements Runnable {
 	private Socket connect; // Client Connection via Socket Class
 	
 	protected static SyncEnergyMonitor energyMonitor;
+	static {
+		energyMonitor = new SyncEnergyMonitor();
+	}
 
 	public HttpRAPL(Socket c) { 
 		connect = c;
@@ -33,7 +36,7 @@ public class HttpRAPL implements Runnable {
 
 	public static void main(String[] args) {
 		Utils.execCmd("sudo modprobe msr");
-		energyMonitor = new SyncEnergyMonitor();
+		//energyMonitor = new SyncEnergyMonitor();
 		energyMonitor.init();
 		startServer();
 		energyMonitor.dealloc();

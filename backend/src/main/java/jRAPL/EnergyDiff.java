@@ -7,18 +7,37 @@ public final class EnergyDiff extends EnergySample
 {
 	private Duration elapsedTime = null; //time between the two EnergyStamps
 
-	public EnergyDiff(int socket, double[] statsForSocket, Duration elapsedTime) {
-		super(socket, statsForSocket);
+	public EnergyDiff(int socket, double[] enerForSocket, Duration elapsedTime) {
+		super(socket, enerForSocket);
 		this.elapsedTime = elapsedTime;
 	}
 
-	public EnergyDiff(int socket, double[] statsForSocket) {
-		super(socket, statsForSocket);
+	public EnergyDiff(int socket, double[] enerForSocket) {
+		super(socket, enerForSocket);
 		this.elapsedTime = null;
 	}
 
 	public Duration getElapsedTime() {
 		return this.elapsedTime;
+	}
+
+	public static EnergyDiff average(EnergyDiff[] diffs) {
+		int socket = diffs[0].getSocket();
+		double[] avgs = new double[diffs[0].getNumberOfEnergyReadings()]; // it'll be initialized to all zeroes, right?
+		long elapsedtimeAvg = 0; // nanoseconds
+		int n = diffs.length;
+		for (int i = 0; i < n; i++) {
+			EnergyDiff current = diffs[i];
+			assert current.getSocket() == socket;
+			double[] energies = current.getEnergyArray();
+			for (int j = 0; j < energies.length; j++)
+				avgs[j] += energies[j];	
+			elapsedtimeAvg += current.getElapsedTime().getNano(); // nanoseconds
+		}
+		for (int j = 0; j < avgs.length; j++ )
+			avgs[j] /= n;
+		elapsedtimeAvg /= n;
+		return new EnergyDiff(diffs[0].getSocket(), avgs, Duration.ofNanos(elapsedtimeAvg));
 	}
 
 	@Override
@@ -40,17 +59,17 @@ public final class EnergyDiff extends EnergySample
 
 	public static EnergyDiff between(EnergyStats before, EnergyStats after) {
 		assert after.socket == before.socket;
-		assert after.stats.length == before.stats.length;		
+		assert after.ener.length == before.ener.length;		
 
-		double[] statsDiff = new double[before.stats.length];
-		for (int i = 0; i < after.stats.length; i++) {
-			statsDiff[i] = after.stats[i] - before.stats[i];
-			if (statsDiff[i] < 0) statsDiff[i] += ArchSpec.RAPL_WRAPAROUND;
+		double[] enerDiff = new double[before.ener.length];
+		for (int i = 0; i < after.ener.length; i++) {
+			enerDiff[i] = after.ener[i] - before.ener[i];
+			if (enerDiff[i] < 0) enerDiff[i] += ArchSpec.RAPL_WRAPAROUND;
 		}
 
 		Duration elapsedTime = Duration.between(before.getTimeStamp(), after.getTimeStamp());
 
-		return new EnergyDiff (before.socket, statsDiff, elapsedTime );
+		return new EnergyDiff (before.socket, enerDiff, elapsedTime );
 	}
 
 	@Override

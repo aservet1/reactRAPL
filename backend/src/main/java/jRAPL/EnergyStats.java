@@ -13,20 +13,19 @@ public final class EnergyStats extends EnergySample
 		this.timestamp = Instant.now();
 	}
 	
-	public EnergyStats(int socket, double[] statsForSocket, Instant ts) {
-		super(socket, statsForSocket);
+	public EnergyStats(int socket, double[] enerForSocket, Instant ts) {
+		super(socket, enerForSocket);
 		this.timestamp = ts;
 	}
 
-	public EnergyStats(int socket, double[] statsForSocket) {
-		super(socket, statsForSocket);
+	public EnergyStats(int socket, double[] enerForSocket) {
+		super(socket, enerForSocket);
 		this.timestamp = Instant.now();
 	}
 
 	public String toJSON()
 	{
-		//String jsn = new String();
-		//jsn += arrayToJSONContent();
+		/// System.out.println("<< timestamp: " + timestamp);
 		return "{" + arrayToJSONContent() + "\"timestamp\": "
 				+ Long.toString(timestamp.getNano()/1000) + "}";
 	}

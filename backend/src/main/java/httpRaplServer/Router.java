@@ -11,29 +11,47 @@ class Router {
 	/** Returns header and body of GET request on 'path' */
     static String[] route(String path) {
         String header, body;
-        boolean success = true;
+        boolean success;
         
 		if (path.equals("/"))
 		{
 			body = Pages.WELCOME;
+			success = true;
 		}
 		else if (path.equals("/energy/stats"))
 		{
 			body = JraplJobs.energySnapshot().toJSON();
+			success = true;
 		}
-		else if (path.startsWith("/energy/diff/")) // will overall be of the form '/energy/diff/{milliseconds}'
+		else if (path.startsWith("/energy/diff/")) 
 		{
-			try{
-				int milliseconds = Integer.parseInt(path.substring("/energy/diff/".length())); //remove "energy/diff/" prefix and parse the number remanining
-				body = JraplJobs.energyLapse(milliseconds).toJSON();
+			String suffix = path.substring("/energy/diff".length());
+			try {
+				
+				if (suffix.startsWith("/list:")) {
+					suffix = suffix.substring("/list:".length());
+					String[] params = suffix.split(",");
+					
+					String[] energyDiffJSONs = Utils.objListToJsonList(
+						JraplJobs.energyDiffList(
+							Integer.parseInt(params[0]),
+							Integer.parseInt(params[1])
+						)
+					);
+					body = "{ \"list\": [" + String.join(",", energyDiffJSONs) + "]}";
+					success = true;
+				} else { // will overall be of the form '/energy/diff/{milliseconds}'	
+					int milliseconds = Integer.parseInt(suffix);
+					body = JraplJobs.energyDiff(milliseconds).toJSON();
+					success = true;
+				}
+
 			} catch (NumberFormatException ex) {
-				//ex.printStackTrace();
 				body = Pages.NOT_FOUND;
 				success = false;
 			}
 		}
-	    else
-		{
+	    else {
             body = Pages.NOT_FOUND;
             success = false;
         }

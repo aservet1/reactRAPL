@@ -1,0 +1,3 @@
+make EnergyDiff have an avg() function that averages a list of evergydiffs into one energydiff
+
+make energydiff be named something more general for a period of energy. something like EnergyDuration or EnergyLapse

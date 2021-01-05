@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import jRAPL.EnergySample;
+
 /** Misc helper methods and things */
 class Utils {
 
@@ -24,6 +26,13 @@ class Utils {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	static String[] objListToJsonList(EnergySample[] objs) {
+		String[] jsons = new String[objs.length];
+		int i = 0; for (EnergySample e : objs) 
+			jsons[i++] = e.toJSON();
+		return jsons;
 	}
 	
 	/** Right now only used for 'sudo modprobe msr'.
