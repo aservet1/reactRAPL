@@ -28,7 +28,7 @@ class Router {
 			String suffix = path.substring("/energy/diff".length());
 			try {
 				
-				if (suffix.startsWith("/list:")) {
+				if (suffix.startsWith("/list:")) { // '/energy/diff/list:{duration},{samplingRate}'
 					suffix = suffix.substring("/list:".length());
 					String[] params = suffix.split(",");
 					
