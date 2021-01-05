@@ -13,30 +13,26 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 import jRAPL.SyncEnergyMonitor;
-import jRAPL.EnergyDiff;
-import jRAPL.EnergyStats;
+//import jRAPL.EnergyDiff;
+//import jRAPL.EnergyStats;
 
 // Original code copied and modified from SSaurel's Blog: 
 // https://www.ssaurel.com/blog/create-a-simple-http-web-server-in-java
 // Each Client Connection will be managed in a dedicated Thread
 public class HttpRAPL implements Runnable { 
 
-	// port to listen connection
-	static final int PORT = 8080;
-
-	// verbose mode
-	static final boolean verbose = true;
-
-	// Client Connection via Socket Class
-	private Socket connect;
-	private static SyncEnergyMonitor energyMonitor;
+	static final int PORT = 8080; // port to listen connection
+	static final boolean verbose = true; // verbose mode
+	private Socket connect; // Client Connection via Socket Class
+	
+	protected static SyncEnergyMonitor energyMonitor;
 
 	public HttpRAPL(Socket c) { 
 		connect = c;
 	}
 
 	public static void main(String[] args) {
-		Utils.execCmd("modprobe msr");
+		Utils.execCmd("sudo modprobe msr");
 		energyMonitor = new SyncEnergyMonitor();
 		energyMonitor.init();
 		startServer();
@@ -68,12 +64,9 @@ public class HttpRAPL implements Runnable {
 		BufferedOutputStream dataOut = null;
 
 		try {
-			// we read characters from the client via input stream on the socket
-			in = new BufferedReader(new InputStreamReader(connect.getInputStream()));
-			// we get character output stream to client (for headers)
-			headerOut = new PrintWriter(connect.getOutputStream());
-			// get binary output stream to client (for requested data)
-			dataOut = new BufferedOutputStream(connect.getOutputStream());
+			in = new BufferedReader(new InputStreamReader(connect.getInputStream())); // we read characters from the client via input stream on the socket
+			headerOut = new PrintWriter(connect.getOutputStream()); // we get character output stream to client (for headers)
+			dataOut = new BufferedOutputStream(connect.getOutputStream()); // get binary output stream to client (for requested data)
 
 			// get first line of the request from the client
 			String input = in.readLine();
@@ -81,19 +74,44 @@ public class HttpRAPL implements Runnable {
 			// we parse the request with a string tokenizer
 			StringTokenizer parse = new StringTokenizer(input);
 			String method = parse.nextToken().toUpperCase(); // we get the HTTP method of the client
-			// we get file requested ie "/energy"
 			String pageRequested = parse.nextToken().toLowerCase();
 
-			// we only support GET and HEAD method
-			if (!method.equals("GET") && !method.equals("HEAD")) {
-				if (verbose) System.out.println("501 Not Implemented : " + method + " method.");
-				sendHTTPHeader(headerOut, "HTTP/1.1 501 Not Implemented", 0);
-			} else if (method.equals("GET")) { // GET method so we return content
-				byte[] response = getResponse(pageRequested);
-				sendHTTPHeader(headerOut, "HTTP/1.1 200 OK", response.length);				
-				sendHTTPResponse(dataOut, response, response.length);
+			if (method.equals("GET")) { // we only support GET method
+				String[] response = Router.route(pageRequested);
+				String header = response[0];
+				byte[] body = response[1].getBytes();
+
+				if (verbose) {
+					System.out.println("----- GET Response Header -----");
+					System.out.println(header);
+					System.out.println("----- GET Response Body -------");
+					System.out.println(new String(body));
+					System.out.println("-------------------------------");
+				}
+				
+				headerOut.println(header);
+				headerOut.println(); // blank line between headers and content, very important !
+				headerOut.flush();
+				dataOut.write(body, 0, body.length);
+				dataOut.flush();
+			} 
+			else { // Method not supported
+				if (verbose) { 
+					System.out.println("501 Not Implemented : " + method + " method.");				
+				}
+				
+				String header = String.join( "\n",
+					"HTTP/1.1 501 Not Implemented",
+	    	    	"Server: HttpRAPL Server for Energy Requests : 1.0",
+	        		"Date: " + new Date(), 
+					"Content-length: 0"
+				);
+
+				headerOut.println(header);
+				headerOut.flush();				
 			}
 		} catch (IOException ioe) {
+			System.err.println("ioe caught!!");
 			System.err.println("Server error : " + ioe);
 		} finally {
 			try {
@@ -105,76 +123,9 @@ public class HttpRAPL implements Runnable {
 				System.err.println("Error closing stream : " + e.getMessage());
 			} 
 			if (verbose) {
-				System.out.println("Connection closed.\n");
+				System.out.println("Connection closed.");
+				System.out.println("===============================");
 			}
 		}
 	}
-
-	private void sendHTTPHeader(PrintWriter headerOut, String firstLine, int fileLength) {
-		headerOut.println(firstLine);
-		headerOut.println("Server: HttpRAPL Server for Energy Requests : 1.0");
-		headerOut.println("Date: " + new Date());
-		headerOut.println("Content-type: " + "something");
-		headerOut.println("Content-length: " + fileLength);
-		headerOut.println(); // blank line between headers and content, very important !
-		headerOut.flush(); // flush character output stream buffer
-	}
-
-	private void sendHTTPResponse(BufferedOutputStream dataOut, byte[] response, int len) throws IOException {
-		dataOut.write(response, 0, len);
-		dataOut.flush();
-	}
-
-	private void sleep_print(int ms) {
-		// print the next second every 1000 ms
-		int seconds = (int)(ms/1000);
-		int milliseconds = ms % 1000;
-		if (verbose) {
-			System.out.println("sec: " + seconds + ", " + "msec: " + milliseconds);
-		} try {
-			for (int s = 1; s <= seconds; s++) {
-				Thread.sleep(1000);
-				if (verbose) {
-					System.out.println(s);
-				}
-			}
-			Thread.sleep(milliseconds);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	/** Come up with a byte[] to send as the response to a GET request */
-	private byte[] getResponse(String pageRequested) {
-		byte[] response;
-		if (pageRequested.equals("/"))
-		{
-			response = Pages.WELCOME.getBytes();
-		}
-		else if (pageRequested.equals("/energy/stats"))
-		{
-			response = energyMonitor.getObjectSample(1).toJSON().getBytes();
-		}
-		else if (pageRequested.startsWith("/energy/diff")) // will overall be of the form /energy/diff/{milliseconds}
-		{
-			String[] parts = pageRequested.split("/");
-			int milliseconds = Integer.parseInt(parts[parts.length-1]);
-			EnergyStats before, after;
-			before = energyMonitor.getObjectSample(1);
-			sleep_print(milliseconds);
-			after = energyMonitor.getObjectSample(1);
-			response = EnergyDiff.between(before, after).toJSON().getBytes();
-		}
-		else
-		{
-			response = Pages.NOT_FOUND.getBytes();
-		}
-		
-		if (verbose) {
-			System.out.println(new String(response));
-		}
-
-		return response;
-	}
-
 }
