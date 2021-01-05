@@ -36,32 +36,13 @@ public class HttpRAPL implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		execCmd("modprobe msr");
+		Utils.execCmd("modprobe msr");
 		energyMonitor = new SyncEnergyMonitor();
 		energyMonitor.init();
 		startServer();
 		energyMonitor.dealloc();
 	}
 
-	/** Right now only used for 'sudo modprobe msr'.
-	*   But can be used for any simple / non compound 
-	*   (|&&>;)-like commands. Simple ones.
-	*/
-	private static void execCmd(String command) {
-		String s;
-		try {
-			Process p = Runtime.getRuntime().exec(command);
-        		BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        		BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-        		while ((s = stdInput.readLine()) != null) System.out.println(s); // printing stdout
-        		while ((s = stdError.readLine()) != null) System.out.println(s); // printing stderr
-        	} catch (IOException e) {
-        		System.out.println("<<<IOException in execCmd():");
-        		e.printStackTrace();
-        		System.exit(-1);
-        	}
-	}
-	
 	private static void startServer() {
 		try {
 			ServerSocket serverConnect = new ServerSocket(PORT);
@@ -166,12 +147,13 @@ public class HttpRAPL implements Runnable {
 	/** Come up with a byte[] to send as the response to a GET request */
 	private byte[] getResponse(String pageRequested) {
 		byte[] response;
-		if (pageRequested.equals("/energy/stats"))
+		if (pageRequested.equals("/"))
+		{
+			response = Pages.WELCOME.getBytes();
+		}
+		else if (pageRequested.equals("/energy/stats"))
 		{
 			response = energyMonitor.getObjectSample(1).toJSON().getBytes();
-			if (verbose) {
-				System.out.println(new String(response));
-			}
 		}
 		else if (pageRequested.startsWith("/energy/diff")) // will overall be of the form /energy/diff/{milliseconds}
 		{
@@ -182,16 +164,14 @@ public class HttpRAPL implements Runnable {
 			sleep_print(milliseconds);
 			after = energyMonitor.getObjectSample(1);
 			response = EnergyDiff.between(before, after).toJSON().getBytes();
-			if (verbose) {
-				System.out.println(new String(response));
-			}
 		}
 		else
 		{
-			response = "<h2>invalid page requested</h2>".getBytes();
-			if (verbose) {
-				System.out.println(new String(response));
-			}
+			response = Pages.NOT_FOUND.getBytes();
+		}
+		
+		if (verbose) {
+			System.out.println(new String(response));
 		}
 
 		return response;
