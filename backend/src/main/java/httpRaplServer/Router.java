@@ -38,7 +38,7 @@ class Router {
 							Integer.parseInt(params[1])
 						)
 					);
-					body = "{ \"list\": [" + String.join(",", energyDiffJSONs) + "]}";
+					body = "{\"list\": [" + String.join(",", energyDiffJSONs) + "]}";
 					success = true;
 				} else { // will overall be of the form '/energy/diff/{milliseconds}'	
 					int milliseconds = Integer.parseInt(suffix);
@@ -56,11 +56,13 @@ class Router {
             success = false;
         }
         
-        header = "HTTP/1.1 " + ((success) ? "200 OK" : "404 NOT FOUND") + "\n"
-    		    +"Server: HttpRAPL Server for Energy Requests : 1.0" + "\n"
-    	    	+"Date: " + new Date() + "\n"
-        		+"Content-type: " + "text/html" + "\n" // @TODO not sure if you can just blanket claim that it's "text/html"
-                +"Content-length: " + body.getBytes().length;
+		header = String.join("\n" , 
+				"HTTP/1.1 " + ((success) ? "200 OK" : "404 NOT FOUND"),
+    		    "Server: HttpRAPL Server for Energy Requests : 1.0",
+    	    	"Date: " + new Date(),
+        		// "Content-type: " + "text/html", // @TODO not sure if you can just blanket claim that it's "text/html"
+				"Content-length: " + body.getBytes().length
+			);
 
         return new String[]{header, body};
     }    
