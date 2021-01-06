@@ -11,16 +11,13 @@ class EnergyDiff extends React.Component {
 
         this.state = {
             "EnergyDiff": {"energy":-1},
-            "delay": -1,
+            "duration": -1,
         }
-
-        this.requestEnergyDiff = this.requestEnergyDiff.bind(this) // make it take a parameter of n ms to delay over
-        this.handleTimeAmountChange = this.handleTimeAmountChange.bind(this)
     }
 
-    requestEnergyDiff(e) {
+    requestEnergyDiff = (e) => {
         e.preventDefault()
-        axios.get(`/energy/diff/${this.state.delay}`) // make it '/energy{n}msec' 
+        axios.get(`http://localhost:8080/energy/diff/${this.state.duration}`) // make it '/energy{n}msec' 
             .then(res => {
                 this.setState({"EnergyDiff": res.data})
                 console.log(this.state.EnergyDiff)
@@ -31,16 +28,15 @@ class EnergyDiff extends React.Component {
             })
     }
 
-    handleTimeAmountChange(e) {
-        this.setState({"delay" : e.target.value})
-        console.log(this.state.delay)
+    handleChangeDuration = (e) => {
+        this.setState({"duration" : e.target.value})
     }
 
     render() {
         return (
             <div>
                 <div className="EnergyDiff">
-                    <input type="text"  onChange={this.handleTimeAmountChange}/>
+                    <input type="text"  onChange={this.handleChangeDuration}/>
                     <input type="button" value="EnergyDiff()" onClick={this.requestEnergyDiff}/>
                     <br></br>
                     <ReactFlexyTable data={[this.state.EnergyDiff]} />

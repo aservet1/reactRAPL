@@ -21,6 +21,12 @@ import jRAPL.SyncEnergyMonitor;
 // Each Client Connection will be managed in a dedicated Thread
 public class HttpRAPL implements Runnable { 
 
+	public static void main(String[] args) {
+		Utils.execCmd("sudo modprobe msr");
+		energyMonitor.init();
+		startServer();
+		energyMonitor.dealloc();
+	}
 	static final int PORT = 8080; // port to listen connection
 	static final boolean verbose = true; // verbose mode
 	private Socket connect; // Client Connection via Socket Class
@@ -32,14 +38,6 @@ public class HttpRAPL implements Runnable {
 
 	public HttpRAPL(Socket c) { 
 		connect = c;
-	}
-
-	public static void main(String[] args) {
-		Utils.execCmd("sudo modprobe msr");
-		//energyMonitor = new SyncEnergyMonitor();
-		energyMonitor.init();
-		startServer();
-		energyMonitor.dealloc();
 	}
 
 	private static void startServer() {
