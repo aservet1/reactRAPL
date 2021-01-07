@@ -1,5 +1,5 @@
 # react-rapl
-Using a React.js frontend to request jRAPL readings from the remote server.
+Using a React.js frontend to request jRAPL readings. Then you can monitor a server's energy through the internet.
 
 ### jRAPL
 Energy reading library in Java. jRAPL = Java RAPL. RAPL is Running Average Power Limit, and interface that Intel processors have
