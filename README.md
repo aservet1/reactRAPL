@@ -14,7 +14,7 @@ For this project, I just copied over my jRAPL files, deleted a lot of things tha
 modified them from there to fit this project.
 
 ### How this works
-I'll get into that once I have a cohesive product on my master branch. Still under development.
+Suuuuuper basic right now still a baby project. For now, all you need to do is run the server (from the `httpRAPL/backend` folder, `./runserver.sh`) and run the frontend (from `httpRAPL/frontent`, `npm start`). Then click around the web app.
 
 ### Documentation out of date
 I wouldn't trust the documentation, I can't promise that I updated all of it at this point. All code in `master` is stable and works
