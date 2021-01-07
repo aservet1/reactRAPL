@@ -10,7 +10,12 @@ You need sudo access to run any jRAPL operations. So when starting up any progra
 If you forget to do that, you'll get read errors when you try to read the energy registers.
 
 See https://github.com/aservet1/jRAPL README for general information about jRAPL, although some implementation details will
-likely differ for this version.
+likely differ for this version. That's my main "actually working on the jRAPL library and testing it and adding features" project.
+For this project, I just copied over my jRAPL files, deleted a lot of things that weren't immediately useful for this application, and
+modified them from there to fit this project.
+
+### How this works
+I'll get into that once I have a cohesive product on my master branch. Still under development.
 
 ### Documentation out of date
 I wouldn't trust the documentation, I can't promise that I updated all of it at this point. All code in `master` is stable and works
