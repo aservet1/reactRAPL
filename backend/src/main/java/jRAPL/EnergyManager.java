@@ -11,7 +11,7 @@ public class EnergyManager
 
 	private static void loadLibrary() {
 
-		String nativelib = "/home/alejandro/react-rapl/backend/src/main/java/jRAPL/NativeRAPL/libNativeRAPL.so";
+		String nativelib = "/home/alejandro/Documents/Projects/httpRAPL/backend/src/main/java/jRAPL/NativeRAPL/libNativeRAPL.so";
 		try {
 			System.load(nativelib);
 		} catch (Exception e) {
