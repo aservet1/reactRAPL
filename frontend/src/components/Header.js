@@ -7,6 +7,7 @@ function Header () {
             <NavLink exact activeClassName="active" to="/energystats"> Energy Stats Snapshot | </NavLink>
             <NavLink exact activeClassName="active" to="/energydiff"> Energy Diff Over Time | </NavLink>
             <NavLink exact activeClassName="active" to="/dummy"> test component page | </NavLink>
+            <NavLink exact activeClassName="active" to="/countdown"> count down </NavLink>
         </nav>
     );
 }
