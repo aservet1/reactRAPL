@@ -22,10 +22,10 @@ import jRAPL.SyncEnergyMonitor;
 public class HttpRAPL implements Runnable { 
 
 	public static void main(String[] args) {
-		Utils.execCmd("sudo modprobe msr");
-		energyMonitor.init();
+		// Utils.execCmd("sudo modprobe msr");
+		energyMonitor.activate();
 		startServer();
-		energyMonitor.dealloc();
+		energyMonitor.deactivate();
 	}
 	static final int PORT = 8080; // port to listen connection
 	static final boolean verbose = true; // verbose mode

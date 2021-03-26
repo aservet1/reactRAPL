@@ -2,6 +2,7 @@
 package httpRaplServer;
 
 import java.util.Date;
+import jRAPL.*;
 
 /** Parse url path, call a JraplJob (get energy stats, get energy lapse over milliseconds, etc) 
  * if necessary, and then package up a response and header into a a String array {header, response}
@@ -21,7 +22,7 @@ class Router {
 		}
 		else if (path.equals("/energy/stats"))
 		{
-			body = JraplJobs.energySnapshot().toJSON();
+			body = Utils.toJSON(JraplJobs.energySnapshot());
 			success = true;
 		}
 		else if (path.startsWith("/energy/diff/")) 
@@ -46,7 +47,7 @@ class Router {
 					System.out.println("hello3");
 					int milliseconds = Integer.parseInt(suffix);
 					System.out.println("hello4");
-					body = JraplJobs.energyDiff(milliseconds).toJSON();
+					body = Utils.toJSON(JraplJobs.energyDiff(milliseconds));
 					System.out.println("hello5");
 					success = true;
 				}

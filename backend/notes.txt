@@ -3,3 +3,5 @@ make energydiff be named something more general for a period of energy. somethin
 make sure you can get diff/1000 requests without 404 return
 
 make the diff onChange is working right and getting the proper number in there
+
+Ctrl-C handler-to-shutdown-hook to properly shutdown the server and call monitor.deactivate()

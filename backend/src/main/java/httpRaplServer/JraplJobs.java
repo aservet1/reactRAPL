@@ -3,33 +3,29 @@ package httpRaplServer;
 import jRAPL.SyncEnergyMonitor;
 
 import java.time.Duration;
-
 import jRAPL.EnergyDiff;
 import jRAPL.EnergyStats;
 
 final class JraplJobs {
 	
 	private static SyncEnergyMonitor energyMonitor = HttpRAPL.energyMonitor;
-	//static {
-	//	energyMonitor = new SyncEnergyMonitor();
-	//}
 	
 	protected static EnergyDiff energyDiff(int msec) {
-		EnergyStats before = energyMonitor.getObjectSample(1);
+		EnergyStats before = energyMonitor.getSample();
 		Utils.sleep_print(msec);
-		EnergyStats after = energyMonitor.getObjectSample(1);
+		EnergyStats after = energyMonitor.getSample();
 		return EnergyDiff.between(before, after);
 	}
 	
 	protected static EnergyStats energySnapshot() {
-		return energyMonitor.getObjectSample(1);
+		return energyMonitor.getSample();
 	}
 
 	protected static EnergyDiff[] energyDiffList(int duration, int interval)
 	{
 		int seconds = (int)(duration / interval);
 		EnergyDiff[] diffs = new EnergyDiff[seconds];
-		EnergyStats before = energyMonitor.getObjectSample(1);
+		EnergyStats before = energyMonitor.getSample();
 		EnergyStats after;
 		for(int s = 1; s <= seconds; s++) {
 			try{
@@ -39,25 +35,25 @@ final class JraplJobs {
 				ex.printStackTrace();
 				return null;
 			}
-			after = energyMonitor.getObjectSample(1);
+			after = energyMonitor.getSample();
 			diffs[s-1] = EnergyDiff.between(before,after);
 			before = after;
 		}
 		return diffs;
 	}
 	public static void main(String args[]) {
-		energyMonitor.init();
+		// energyMonitor.init();
 		
-		EnergyDiff[] diffs = energyDiffList(5000,1000);
-		for (EnergyDiff d : diffs)
-			System.out.println(d.toJSON());
+		// EnergyDiff[] diffs = energyDiffList(5000,1000);
+		// for (EnergyDiff d : diffs)
+		// 	System.out.println(Utils.toJSON(d));
 		
-		System.out.println("------------------------------");
+		// System.out.println("------------------------------");
 		
-		EnergyDiff avg = EnergyDiff.average(diffs);
-		System.out.println(avg.toJSON());
+		// EnergyDiff avg = EnergyDiff.average(diffs);
+		// System.out.println(Utils.toJSON(avg));
 		
-		energyMonitor.dealloc();
+		// energyMonitor.dealloc();
 	}
 }
 /** Jobs I would like to see implemented:

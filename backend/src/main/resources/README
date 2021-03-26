@@ -1,0 +1,13 @@
+This JAR file is a snapshot of jRAPL as of 3/26/2021. This is the jRAPL interface that will be provided
+for the scope of this project. No changes to my main jRAPL project will have any influence on this project,
+as this is just a copy of whatever the state of jRAPL was on 3/26/2021
+
+While it contains the Java source files, those should only serve as good-enough-for-now documentation
+about what's available in this version of jRAPL. Changing them will do nothing and will only obfuscate
+them as a reference.
+
+I should not change anything in this JAR, it's just a black box that provides the jRAPL interface.
+It's an external library for all intents and purposes. Black box. jRAPL provides the methods given
+here, and I work with what is given. If an update really needs to happen, I can replace this JAR
+with another one, but understand that this may or may not cause backwards compatibility issues,
+because I don't have a formal / proper version control way of doing things with this.

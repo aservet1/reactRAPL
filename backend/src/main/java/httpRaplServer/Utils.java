@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import jRAPL.EnergySample;
+import jRAPL.*;
 
 /** Misc helper methods and things */
 class Utils {
@@ -31,29 +31,24 @@ class Utils {
 	static String[] objListToJsonList(EnergySample[] objs) {
 		String[] jsons = new String[objs.length];
 		int i = 0; for (EnergySample e : objs) 
-			jsons[i++] = e.toJSON();
+			jsons[i++] = Utils.toJSON(e);
 		return jsons;
 	}
 	
-	/** Right now only used for 'sudo modprobe msr'.
-	*   But can be used for any simple / non compound 
-	*   (|&&>;)-like commands. Simple ones.
-	*/
-	static void execCmd(String command) {
-		String s;
-		try {
-			Process p = Runtime.getRuntime().exec(command);
-        	BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        	BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-			while ((s = stdInput.readLine()) != null) {
-				System.out.println(s); // printing stdout
-			} while ((s = stdError.readLine()) != null) {
-				System.out.println(s); // printing stderr
-			}
-		} catch (IOException e) {
-        	System.out.println("<<<IOException in execCmd():");
-        	e.printStackTrace();
-        	System.exit(-1);
-        }
+	static String toJSON(EnergySample e) {
+		if (e instanceof EnergyStats) return toJSON(e);
+		else if (e instanceof EnergyDiff) return toJSON(e);
+		else return "hey buddy something went wrong here";
 	}
+
+	static String toJSON(EnergyStats e) {
+		return String.format("{dram: %f, gpu: %f, core: %f, package: %f, timestamp: %d}", 
+		e.getDram(), e.getGpu(), e.getCore(), e.getPackage(), e.getTimestamp().toEpochMilli() );
+	}
+
+	static String toJSON(EnergyDiff e) {
+		return String.format("{dram: %f, gpu: %f, core: %f, package: %f, elapsedtime: %d}",
+		e.getDram(), e.getGpu(), e.getCore(), e.getPackage(), e.getElapsedTime().toMillis() );
+	}
+
 }
