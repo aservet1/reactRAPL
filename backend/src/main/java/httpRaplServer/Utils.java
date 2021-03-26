@@ -42,12 +42,12 @@ class Utils {
 	}
 
 	static String toJSON(EnergyStats e) {
-		return String.format("{dram: %f, gpu: %f, core: %f, package: %f, timestamp: %d}", 
+		return String.format("{\"dram\": %f, \"gpu\": %f, \"core\": %f, \"package\": %f, \"timestamp\": %d}", 
 		e.getDram(), e.getGpu(), e.getCore(), e.getPackage(), e.getTimestamp().toEpochMilli() );
 	}
 
 	static String toJSON(EnergyDiff e) {
-		return String.format("{dram: %f, gpu: %f, core: %f, package: %f, elapsedtime: %d}",
+		return String.format("{\"dram\": %f, \"gpu\": %f, \"core\": %f, \"package\": %f, \"elapsedtime\": %d}",
 		e.getDram(), e.getGpu(), e.getCore(), e.getPackage(), e.getElapsedTime().toMillis() );
 	}
 
