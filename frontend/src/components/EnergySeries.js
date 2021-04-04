@@ -54,7 +54,7 @@ class EnergySeries extends React.Component {
                     <ReactFlexyTable
                       data={this.state.EnergySeries}
                       caseSensitive={true}
-                      showExcelButton={true}
+                      showExcelButton={true} //@TODO this doesn't actually show up
                       downloadExcelProps={downloadExcelProps}/>
                 </div>
             </div>
