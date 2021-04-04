@@ -1,10 +1,11 @@
 package httpRaplServer;
 
 import jRAPL.SyncEnergyMonitor;
-
-import java.time.Duration;
 import jRAPL.EnergyDiff;
 import jRAPL.EnergyStats;
+
+import java.time.Duration;
+// import java.util.stream;
 
 final class JraplJobs {
 	
@@ -20,6 +21,17 @@ final class JraplJobs {
 	protected static EnergyStats energySnapshot() {
 		return energyMonitor.getSample();
 	}
+
+	// protected static double avgEnergyPeriod(int duration, int interval)
+	// {
+	// 	EnergyDiff[] energyResults = energyDiffList(duration, interval);
+	// 	double dram, core, gpu, pkg;
+	// 	dram = energyResults.stream.map(e -> e.getDram()).average();
+	// 	core = energyResults.stream.map(e -> e.getCore()).average();
+	// 	gpu = energyResults.stream.map(e -> e.getGpu()).average();
+	// 	pkg = energyResults.stream.map(e -> e.getPackage()).average();
+	// 	return -1;
+	// }
 
 	protected static EnergyDiff[] energyDiffList(int duration, int interval)
 	{

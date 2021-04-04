@@ -28,18 +28,25 @@ class Utils {
 		}
 	}
 
-	static String[] objListToJsonList(EnergySample[] objs) {
+	static String[] diffListToJsonList(EnergyDiff[] objs) {
 		String[] jsons = new String[objs.length];
-		int i = 0; for (EnergySample e : objs) 
+		int i = 0; for (EnergyDiff e : objs) 
 			jsons[i++] = Utils.toJSON(e);
 		return jsons;
 	}
 	
-	static String toJSON(EnergySample e) {
-		if (e instanceof EnergyStats) return toJSON(e);
-		else if (e instanceof EnergyDiff) return toJSON(e);
-		else return "hey buddy something went wrong here";
+	static String[] statsListToJsonList(EnergyStats[] objs) {
+		String[] jsons = new String[objs.length];
+		int i = 0; for (EnergyStats e : objs) 
+			jsons[i++] = Utils.toJSON(e);
+		return jsons;
 	}
+
+	// static String toJSON(EnergySample e) {
+	// 	if (e instanceof EnergyStats) return energyStatsToJSON(e);
+	// 	else if (e instanceof EnergyDiff) return energyDiffToJSON(e);
+	// 	else return "hey buddy something went wrong here";
+	// }
 
 	static String toJSON(EnergyStats e) {
 		return String.format("{\"dram\": %f, \"gpu\": %f, \"core\": %f, \"package\": %f, \"timestamp\": %d}", 

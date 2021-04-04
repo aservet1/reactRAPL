@@ -27,35 +27,29 @@ class Router {
 		}
 		else if (path.startsWith("/energy/diff/")) 
 		{
-			System.out.println("hello1");
 			String suffix = path.substring("/energy/diff/".length());
 			try {
-				System.out.println("hello2");
-				if (suffix.startsWith("list:")) { // '/energy/diff/list:{duration},{samplingRate}'
+				if (suffix.startsWith("list:")) { // '/energy/diff/list:{duration},{samplingRate}' //@TODO: get legit URL query, not list:%d,%d
 					suffix = suffix.substring("list:".length());
 					String[] params = suffix.split(",");
 					
-					String[] energyDiffJSONs = Utils.objListToJsonList(
+					String[] energyDiffJSONs = Utils.diffListToJsonList(
 						JraplJobs.energyDiffList(
 							Integer.parseInt(params[0]),
 							Integer.parseInt(params[1])
 						)
 					);
-					body = "{\"list\": [" + String.join(",", energyDiffJSONs) + "]}";
+					body = String.format("[%s]", String.join(",", energyDiffJSONs));
 					success = true;
 				} else { // will overall be of the form '/energy/diff/{milliseconds}'	
-					System.out.println("hello3");
 					int milliseconds = Integer.parseInt(suffix);
-					System.out.println("hello4");
 					body = Utils.toJSON(JraplJobs.energyDiff(milliseconds));
-					System.out.println("hello5");
 					success = true;
 				}
 
 			} catch (NumberFormatException ex) {
 				System.out.println(ex.getMessage());
 				ex.printStackTrace();
-				System.out.println("hello6");
 				body = Pages.NOT_FOUND;
 				success = false;
 			}
@@ -65,7 +59,6 @@ class Router {
             success = false;
         }
  
-		
 		// Create header based off of collected info
 		header = String.join("\n" , 
 				"HTTP/1.1 " + ((success) ? "200 OK" : "404 NOT FOUND"),
