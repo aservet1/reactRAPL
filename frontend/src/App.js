@@ -1,6 +1,7 @@
 import './App.css';
 import EnergyStats from './components/EnergyStats.js';
 import EnergyDiff from './components/EnergyDiff.js'
+import EnergySeries from './components/EnergySeries.js'
 import DummyComponent from './components/DummyComponent.js';
 import Header from './components/Header.js'
 import Countdown from './components/Countdown.js'
@@ -22,6 +23,7 @@ function App() {
         <Header/>
         <Route exact path="/energystats" component={EnergyStats} />
         <Route exact path="/energydiff" component={EnergyDiff} />
+        <Route exact path="/energyseries" component={EnergySeries} />
         <Route exact path="/dummy" component={DummyComponent} />
         <Route exact path="/countdown" component={Countdown} />
       </Router>

@@ -17,6 +17,7 @@ class EnergyStats extends React.Component {
 
     requestEnergyStats(e) {
         e.preventDefault()
+        //axios.get("http://192.149.4.29:8080/energy/stats")
         axios.get("http://localhost:8080/energy/stats")
             .then(res => {
                 this.setState({"EnergyStats": res.data})
