@@ -14,4 +14,9 @@ public class GreetingController {
 		return "greeting";
 	}
 
+//	@GetMapping("/energy/stats")
+//	public String getEnergyStats() {
+//		return "hello";
+//	}
+
 }
