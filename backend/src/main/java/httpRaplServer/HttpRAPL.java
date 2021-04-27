@@ -75,12 +75,12 @@ public class HttpRAPL implements Runnable {
 			// we parse the request with a string tokenizer
 			StringTokenizer parse = new StringTokenizer(input);
 			String method = parse.nextToken().toUpperCase(); // we get the HTTP method of the client
-			String pageRequested = parse.nextToken().toLowerCase();
+			String fileRequested = parse.nextToken().toLowerCase();
 
 			if (method.equals("GET")) { // we only support GET method
-				String[] response = Router.route(pageRequested);
+				String[] response = Router.route(fileRequested);
 				String header = response[0];
-				byte[] body = response[1].getBytes();
+				String body = response[1];
 
 				if (verbose) {
 					System.out.println("----- GET Response Header -----");
@@ -93,7 +93,7 @@ public class HttpRAPL implements Runnable {
 				headerOut.println(header);
 				headerOut.println(); // blank line between headers and content, very important !
 				headerOut.flush();
-				dataOut.write(body, 0, body.length);
+				dataOut.write(body.getBytes(), 0, body.length());
 				dataOut.flush();
 			} 
 			else { // Method not supported

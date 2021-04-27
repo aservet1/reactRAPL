@@ -20,7 +20,7 @@ class EnergySeries extends React.Component {
         e.preventDefault()
         const d = this.state.duration;
         const s = this.state.samplingRate;
-        axios.get(`http://localhost:8080/energy/diff/list:${d},${s}`) // TODO you've gotta change this to a legit formal URL format
+        axios.get(`http://localhost:8080/energy/diff/list?duration=${d}&sampling_rate=${s}`)
             .then(res => {
                 this.setState({"EnergySeries": res.data})
             }).catch(err =>{

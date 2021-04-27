@@ -17,7 +17,7 @@ class EnergyDiff extends React.Component {
 
     requestEnergyDiff = (e) => {
         e.preventDefault()
-        axios.get(`http://localhost:8080/energy/diff/${this.state.duration}`) // make it '/energy{n}msec' 
+        axios.get(`http://localhost:8080/energy/diff/sample?duration=${this.state.duration}`)
             .then(res => {
                 this.setState({"EnergyDiff": res.data})
                 console.log(this.state.EnergyDiff)
