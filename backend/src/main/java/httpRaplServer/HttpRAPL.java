@@ -22,7 +22,6 @@ import jRAPL.SyncEnergyMonitor;
 public class HttpRAPL implements Runnable { 
 
 	public static void main(String[] args) {
-		// Utils.execCmd("sudo modprobe msr");
 		energyMonitor.activate();
 		startServer();
 		energyMonitor.deactivate();
