@@ -11,7 +11,7 @@ class Utils {
 
 	/** Shows how many seconds and milliseconds, then counts up printing every second 
 	 *	The overhead of looping and printing is gonna throw off the overall sleep time
-	 *	by a few milliseconds.
+	 *	by a few milliseconds (I think).
 	*/
 	static void sleep_print(int ms) {
 		int seconds = (int)(ms/1000);
@@ -41,12 +41,6 @@ class Utils {
 			jsons[i++] = Utils.toJSON(e);
 		return jsons;
 	}
-
-	// static String toJSON(EnergySample e) {
-	// 	if (e instanceof EnergyStats) return energyStatsToJSON(e);
-	// 	else if (e instanceof EnergyDiff) return energyDiffToJSON(e);
-	// 	else return "hey buddy something went wrong here";
-	// }
 
 	static String toJSON(EnergyStats e) {
 		return String.format("{\"dram\": %f, \"gpu\": %f, \"core\": %f, \"package\": %f, \"timestamp\": %d}", 
