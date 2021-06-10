@@ -15,6 +15,7 @@ repository for the University research project I'm developing it for.
 ### How this works
 This is pretty basic, since it's a free-time side project. For now, all you need to do is run the server (from the `httpRAPL/backend` folder, `./runserver.sh`) and run the frontend (from `httpRAPL/frontent`, `npm start`). Then click around the web app.
 
+#### Security disclaimer!
 Note that `./runserver.sh` requires root access to your system to get the energy readings, so vet this or take security precautions as you need. I know it's
 bad practice to run a web server as root, I'm looking into either separating the root-required part as a different process that isn't directly accessed by the
 web server, or making a user with specific permissions to access the energy devices (and nothing else) and running the server from there.
