@@ -9,12 +9,15 @@ energy consumption. So jRAPL for the purposes of this project is an Energy Readi
 You need sudo access to run any jRAPL operations. So when starting up any programs that have jRAPL readings, you have to do `sudo java DriverProgram...`.
 If you forget to do that, you'll get read errors when you try to read the energy registers.
 
-See https://github.com/aservet1/jRAPL README for general information about jRAPL, although some implementation details will differ. That's my main "actually working on the jRAPL library and testing it and adding features" project.
-For this project, I just copied over my jRAPL files, deleted a lot of things that weren't immediately useful for this application, and
-modified them from there to fit this project.
+See https://github.com/aservet1/jRAPL README for general information about jRAPL, although some implementation details will differ. There is the development
+repository for the University research project I'm developing it for.
 
 ### How this works
-Suuuuuper basic right now still a baby project. For now, all you need to do is run the server (from the `httpRAPL/backend` folder, `./runserver.sh`) and run the frontend (from `httpRAPL/frontent`, `npm start`). Then click around the web app.
+This is pretty basic, since it's a free-time side project. For now, all you need to do is run the server (from the `httpRAPL/backend` folder, `./runserver.sh`) and run the frontend (from `httpRAPL/frontent`, `npm start`). Then click around the web app.
+
+Note that `./runserver.sh` requires root access to your system to get the energy readings, so vet this or take security precautions as you need. I know it's
+bad practice to run a web server as root, I'm looking into either separating the root-required part as a different process that isn't directly accessed by the
+web server, or making a user with specific permissions to access the energy devices (and nothing else) and running the server from there.
 
 ### Documentation out of date
 I wouldn't trust the documentation, I can't promise that I updated all of it at this point. All code in `master` is stable and works
