@@ -1,16 +1,5 @@
 # httpRAPL
-Monitor a remote server's energy consumption through a web app.
-
-## jRAPL
-Energy reading library in Java. jRAPL = Java RAPL. RAPL is Running Average Power Limit, an interface that Intel processors have
-to monitor energy consumption and also do stuff like set power limits. For this project, RAPL will be done to read and report 
-energy consumption. So jRAPL for the purposes of this project is an Energy Reading Library in Java.
-
-You need sudo access to run any jRAPL operations. So when starting up any programs that have jRAPL readings, you have to do `sudo java DriverProgram...`.
-If you forget to do that, you'll get read errors when you try to read the energy registers.
-
-See [jRAPL](https://github.com/aservet1/jRAPL) README for general information about jRAPL, although some implementation details might differ. That is the 
-development repository for the University research project I'm developing it for.
+Monitor a remote server's energy consumption through a simple web service.
 
 ## How this works
 This is pretty basic, since it's a free-time side project. For now, all you need to do is run the server (from the `httpRAPL/backend` folder,
@@ -27,6 +16,18 @@ directly accessed by the web server, or making a user with specific permissions 
 server from there.
 
 The project is still very much in progress, so I haven't made this safe for anyone to run without vetting their concerns. Feel free to contact me with questions.
+
+## About the Java Energy API
+jRAPL is an Energy reading library in Java. jRAPL = Java RAPL. RAPL is Running Average Power Limit, an interface that Intel processors have
+to monitor energy consumption and also do stuff like set power limits. For this project, RAPL will be done to read and report 
+energy consumption. So jRAPL for the purposes of this project is an Energy Reading Library in Java.
+
+You need sudo access to run any jRAPL operations. So when starting up any programs that have jRAPL readings, make sure to run as root. The interface must
+also be manually triggered, do `sudo modprobe msr` and it will stay open until your computer shuts down. If you get any energy reading errors reported,
+make sure you've done noth of these things
+
+See [jRAPL](https://github.com/aservet1/jRAPL) README for general information about jRAPL, although some implementation details might differ. That is the 
+development repository for the University research project I'm developing it for.
 
 ## Contact
 Alejandro Servetto {aservet1@binghamton.edu}
