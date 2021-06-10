@@ -9,7 +9,7 @@ energy consumption. So jRAPL for the purposes of this project is an Energy Readi
 You need sudo access to run any jRAPL operations. So when starting up any programs that have jRAPL readings, you have to do `sudo java DriverProgram...`.
 If you forget to do that, you'll get read errors when you try to read the energy registers.
 
-See (jRAPL)[https://github.com/aservet1/jRAPL README] for general information about jRAPL, although some implementation details might differ. That is the 
+See [jRAPL](https://github.com/aservet1/jRAPL) README for general information about jRAPL, although some implementation details might differ. That is the 
 development repository for the University research project I'm developing it for.
 
 ## How this works
