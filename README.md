@@ -1,4 +1,4 @@
-# httpRAPL
+# webRAPL
 Monitor a remote server's energy consumption via web service.
 
 ## How this works
@@ -17,7 +17,7 @@ server from there.
 
 The project is still very much in progress, so I haven't made this safe for anyone to run without vetting their concerns. Feel free to contact me with questions.
 
-## About the Java Energy API
+## About the Java Energy API: jRAPL
 [jRAPL](https://github.com/aservet1/jRAPL) is an Energy reading library in Java. jRAPL = Java RAPL. RAPL is Running Average Power Limit,
 an interface that Intel processors have to monitor energy consumption and also do stuff like set power limits. This project uses RAPL
 utilities to read and report energy consumption, implemented in a Java library.
