@@ -2,8 +2,8 @@
 Monitor a remote server's energy consumption via web service.
 
 ## How this works
-This is still pretty basic at the moment. For now, all you need to do is run the server (from the `httpRAPL/backend` folder,
-`./runserver.sh`) and run the frontend (from `httpRAPL/frontent`, `npm start`). Then click around the web app.
+This is still pretty basic at the moment. For now, all you need to do is run the server (from the `webRAPL/backend` folder,
+`./runserver.sh`) and run the frontend (from `webRAPL/frontent`, `npm start`). Then click around the web app.
 
 You can also use the backend on its own. It tells you which port it's running on once you start it up. I've pinged it from another computer on
 my local network with `curl` and a very simple Python script. You can use it as a standalone web service, not just through the frontend I wrote.
