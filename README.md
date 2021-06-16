@@ -24,7 +24,7 @@ utilities to read and report energy consumption, implemented in a Java library.
 
 You need sudo access to run any jRAPL operations. So when starting up any programs that have jRAPL readings, make sure to run as root. The interface must
 also be manually triggered, do `sudo modprobe msr` and it will stay open until your computer shuts down. If you get any energy reading errors reported,
-make sure you've done noth of these things
+it's likely because you haven't done one of these things.
 
 See [jRAPL](https://github.com/aservet1/jRAPL) README for general information about jRAPL, although some implementation details might differ. That is the 
 development repository for the University research project I'm developing it for.
