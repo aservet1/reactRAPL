@@ -1,16 +1,20 @@
 
 import React from 'react';
 import axios from 'axios';
-import ReactFlexyTable from "react-flexy-table"
+import EnergyTable from './EnergyTable';
 import 'react-flexy-table/dist/index.css'
 
 class EnergySeries extends React.Component {
+
+
+    PLACEHOLDER = [{"energy series": "~~~~~~~~~~~~~~~~~"}];
+    WAITING = [{'fetching':'...'}]
 
     constructor(props) {
         super(props)
 
         this.state = {
-            "EnergySeries": [{"energySeries":"~~~~~"}],
+            "EnergySeries": this.PLACEHOLDER,
             "duration": 0,
             "samplingRate": 0
         }
@@ -18,6 +22,9 @@ class EnergySeries extends React.Component {
 
     requestEnergySeries = (e) => {
         e.preventDefault()
+    
+        this.setState({EnergySeries: this.WAITING})
+
         const d = this.state.duration;
         const s = this.state.samplingRate;
         axios.get(`http://localhost:8080/energy/diff/list?duration=${d}&sampling_rate=${s}`)
@@ -46,18 +53,13 @@ class EnergySeries extends React.Component {
         }
 
         return (
-            <div>
-                <div className="EnergySeries">
-                    <input type="text" placeholder="duration,samplingRate" onChange={this.handleChangeSeriesParams}/>
-                    <input type="button" value="EnergySeries()" onClick={this.requestEnergySeries}/>
-                    <br></br>
-                    <ReactFlexyTable
-                      data={this.state.EnergySeries}
-                      caseSensitive={true}
-                      showExcelButton={true} //@TODO this doesn't actually show up
-                      downloadExcelProps={downloadExcelProps}/>
-                </div>
-            </div>
+            <EnergyTable
+                placeholder='duration,samplingRate'
+                onTextChange={this.handleChangeSeriesParams}
+                buttonText='EnergySeries()'
+                buttonOnClick={this.requestEnergySeries}
+                data={this.state.EnergySeries}
+            />
         );
     }
 }

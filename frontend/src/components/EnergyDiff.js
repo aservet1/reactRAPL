@@ -1,47 +1,53 @@
 
 import React from 'react';
 import axios from 'axios';
-import ReactFlexyTable from "react-flexy-table"
+import EnergyTable from './EnergyTable';
 import 'react-flexy-table/dist/index.css'
+import '../App.css'
 
 class EnergyDiff extends React.Component {
 
     constructor(props) {
-        super(props)
-
+        super(props);
         this.state = {
             "EnergyDiff": {"energy":-1},
             "duration": -1,
-        }
+        };
     }
 
     requestEnergyDiff = (e) => {
         e.preventDefault()
         axios.get(`http://localhost:8080/energy/diff/sample?duration=${this.state.duration}`)
             .then(res => {
-                this.setState({"EnergyDiff": res.data})
-                console.log(this.state.EnergyDiff)
+                this.setState({
+                    "EnergyDiff": res.data
+                });
+                // console.log(this.state.EnergyDiff);
             }).catch(err =>{
-                console.log('fail!!!!!!!!!!!!!!!!!!!!!!')
-                console.log(err)
-                this.setState({})
+                this.setState({
+                    EnergyDiff: {
+                        "error": "there was an error in the GET request"
+                    }
+                });
+                // console.log(err);
             })
     }
 
     handleChangeDuration = (e) => {
-        this.setState({"duration" : e.target.value})
+        this.setState({
+            "duration" : e.target.value
+        });
     }
 
     render() {
         return (
-            <div>
-                <div className="EnergyDiff">
-                    <input type="text"  onChange={this.handleChangeDuration}/>
-                    <input type="button" value="EnergyDiff()" onClick={this.requestEnergyDiff}/>
-                    <br></br>
-                    <ReactFlexyTable data={[this.state.EnergyDiff]} />
-                </div>
-            </div>
+            <EnergyTable
+                placeholder    =  'duration'
+                onTextChange   =  {this.handleChangeDuration}
+                buttonText     =  'EnergyDiff()'
+                buttonOnClick  =  {this.requestEnergyDiff}
+                data           =  {[this.state.EnergyDiff]}
+            />
         );
     }
 }

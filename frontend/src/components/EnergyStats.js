@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import ReactFlexyTable from "react-flexy-table"
+import Table from './Table.js'
 import 'react-flexy-table/dist/index.css'
 
 class EnergyStats extends React.Component {
@@ -36,9 +36,15 @@ class EnergyStats extends React.Component {
     render() {
         return (
             <div className="EnergyStats">
-               <input type="button" value="EnergyStats()" onClick={this.requestEnergyStats}/>
-               <br></br>
-               <ReactFlexyTable data={[this.state.EnergyStats]}/>
+                <input
+                    type="button"
+                    value="EnergyStats()"
+                    onClick={this.requestEnergyStats}
+                />
+                <br></br>
+                <Table
+                    data={[this.state.EnergyStats]}
+                />
             </div>
         );
     }

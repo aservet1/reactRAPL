@@ -1,0 +1,46 @@
+.inputSection {
+    display: flex;
+    justify-content: center;
+}
+.inputSection input {
+    padding: 5px;
+    margin:5px;
+    border-radius: 7px;
+}
+.inputSection input[type="button"]{
+    border-radius: 5px;
+    color:black;
+    background-color: #098cf0;
+}
+
+#TBL {
+    font-family: Monospace;
+    border-collapse: collapse;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#TBL th {
+    border: 1px solid rgb(2, 83, 45);
+    font-size: 22px;
+    text-align: center;
+
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #04AA6D;
+    color: white;
+}
+#TBL td {
+    border: 1px solid #ddd;
+    font-size:18px;
+} 
+#TBL tr:nth-child(even){
+    background-color: #0476d0;
+}
+#TBL tr:nth-child(odd){
+    background-color: #2ceef0;
+}
+  
+#TBL tr:hover {
+    background-color: #ddd;
+}

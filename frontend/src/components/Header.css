@@ -1,0 +1,17 @@
+#the-header {
+    padding: 20px;
+    background: #6f2dbd;
+    font-family: Cochin;
+}
+
+.header-link {
+    padding: 10px;
+    background: #b298dc;
+    border: 1px outset black;
+    color: white;
+    border-radius: 5px;
+}
+
+.header-link:hover {
+    background: rgb(65, 65, 65);
+}

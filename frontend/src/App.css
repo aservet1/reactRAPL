@@ -1,3 +1,11 @@
 .App {
   text-align: center;
 }
+
+body {
+  background-color:indigo
+}
+
+ReactFlexyTable {
+  margin: 20px;
+}
