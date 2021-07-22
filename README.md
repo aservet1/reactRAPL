@@ -1,6 +1,8 @@
 # webRAPL
 Monitor a remote server's energy consumption via web service.
 
+![image](https://user-images.githubusercontent.com/54599694/126587277-bc42eb0a-2525-4b19-9e2b-28672a9b2001.png)
+
 ## How this works
 This is still pretty basic at the moment. For now, all you need to do is run the server (from the `webRAPL/backend` folder,
 `./runserver.sh`) and run the frontend (from `webRAPL/frontent`, `npm start`). Then click around the web app.
