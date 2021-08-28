@@ -3,6 +3,7 @@ import React from 'react';
 import axios from 'axios';
 import EnergyTable from './EnergyTable';
 import 'react-flexy-table/dist/index.css'
+import objectArrayToCsvString from '../util'
 
 class EnergySeries extends React.Component {
 
@@ -45,6 +46,19 @@ class EnergySeries extends React.Component {
         });
     }
 
+    downloadData = (e) => {
+        const csvData = objectArrayToCsvString(this.state.EnergySeries);
+        const element = document.createElement("a");
+        const file = new Blob (
+            [csvData],
+            {type: 'text/csv'}
+        );
+        element.href = URL.createObjectURL(file);
+        element.download = "energy_data.csv";
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+    }
+
     render() {
         const downloadExcelProps = {
           type: 'filtered',
@@ -53,13 +67,24 @@ class EnergySeries extends React.Component {
         }
 
         return (
-            <EnergyTable
-                placeholder='duration,samplingRate'
-                onTextChange={this.handleChangeSeriesParams}
-                buttonText='EnergySeries()'
-                buttonOnClick={this.requestEnergySeries}
-                data={this.state.EnergySeries}
-            />
+            <div>
+                <button
+                    id = 'DownloadButton'
+                    style = {{
+                        margin: '10px'
+                    }}
+                    onClick = {this.downloadData}
+                >
+                    Download CSV Data
+                </button>
+                <EnergyTable
+                    placeholder='duration,samplingRate'
+                    onTextChange={this.handleChangeSeriesParams}
+                    buttonText='EnergySeries()'
+                    buttonOnClick={this.requestEnergySeries}
+                    data={this.state.EnergySeries}
+                />
+            </div>
         );
     }
 }
