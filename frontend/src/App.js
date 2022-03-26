@@ -5,6 +5,7 @@ import EnergySeries from './components/EnergySeries.js'
 import DummyComponent from './components/DummyComponent.js';
 import Header from './components/Header.js'
 import Countdown from './components/Countdown.js'
+import LiveUpdates from './components/LiveUpdates.js'
 
 //Import all needed Component for this tutorial
 import {
@@ -20,12 +21,14 @@ function App() {
     <div className="App">
       {/*printf("hello w0rld\n");*/}
       <Router>
-        < Header                                                         />
-        < Route  exact  path="/energystats"   component={EnergyStats}    />
-        < Route  exact  path="/energydiff"    component={EnergyDiff}     />
-        < Route  exact  path="/energyseries"  component={EnergySeries}   />
-        < Route  exact  path="/dummy"         component={DummyComponent} />
-        < Route  exact  path="/countdown"     component={Countdown}      />
+        <Header                                                         />
+        <Route  exact  path="/energystats"   component={EnergyStats}    />
+        <Route  exact  path="/energydiff"    component={EnergyDiff}     />
+        <Route  exact  path="/energyseries"  component={EnergySeries}   />
+        <Route  exact path="/liveupdates"    component={LiveUpdates}    />
+        <Route  exact path="/dummy"          component={DummyComponent} />
+        <Route  exact path="/countdown"      component={Countdown}      />
+
       </Router>
     </div>
   );
